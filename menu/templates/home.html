@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papparoti | The Father of All Buns</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+        .bun-gradient { background: linear-gradient(135deg, #6F4E37 0%, #2D1B0E 100%); }
+        .glass-nav { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
+        .card-hover:hover { transform: translateY(-10px); transition: all 0.3s ease; }
+    </style>
+</head>
+<body class="bg-orange-50/30 text-stone-800">
+
+    <nav class="fixed w-full z-50 glass-nav border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-amber-700 rounded-full flex items-center justify-center text-white">
+                    <i data-lucide="coffee"></i>
+                </div>
+                <span class="text-2xl font-bold tracking-tighter text-amber-900">Pappa<span class="text-amber-600">roti</span></span>
+            </div>
+
+            <div class="hidden md:flex space-x-8 font-medium text-stone-600">
+                <a href="#home" class="hover:text-amber-700 transition">Home</a>
+                <a href="#menu" class="hover:text-amber-700 transition">Menu</a>
+                <a href="#deals" class="hover:text-amber-700 transition">Deals</a>
+                <a href="#" class="hover:text-amber-700 transition">Locations</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button class="p-2 hover:bg-stone-100 rounded-full relative">
+                    <i data-lucide="shopping-bag"></i>
+                    <span class="absolute top-0 right-0 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">2</span>
+                </button>
+                <div class="flex items-center gap-3 pl-4 border-l border-stone-300">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-xs text-stone-500">Welcome back,</p>
+                        <p class="text-sm font-semibold">Alex Dan</p>
+                    </div>
+                    <img src="https://ui-avatars.com/api/?name=Alex+Dan&background=D4A373&color=fff" alt="Profile" class="w-10 h-10 rounded-full border-2 border-amber-200">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="relative pt-32 pb-20 px-6 overflow-hidden">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div class="hero-content">
+                <span class="inline-block px-4 py-1 bg-amber-100 text-amber-800 rounded-full text-sm font-semibold mb-6">✨ Best Seller of 2026</span>
+                <h1 class="text-6xl md:text-7xl font-bold leading-tight text-stone-900 mb-6">
+                    Freshly Baked <br>
+                    <span class="text-amber-700">Happiness.</span>
+                </h1>
+                <p class="text-lg text-stone-600 mb-8 max-w-md">
+                    Experience the world-famous coffee-coated crispy bun with a buttery heart. One bite, and you're in love.
+                </p>
+                <div class="flex gap-4">
+                    <button class="bg-amber-800 text-white px-8 py-4 rounded-2xl font-bold hover:bg-amber-900 transition-all shadow-lg shadow-amber-900/20">Order Now</button>
+                    <button class="bg-white border border-stone-200 px-8 py-4 rounded-2xl font-bold hover:bg-stone-50 transition-all">View Gallery</button>
+                </div>
+            </div>
+            <div class="relative hero-image">
+                <div class="absolute -z-10 w-full h-full bg-amber-200/50 blur-3xl rounded-full"></div>
+                <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=800"
+                     alt="Signature Bun"
+                     class="rounded-[40px] shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500">
+            </div>
+        </div>
+    </section>
+
+    <section id="menu" class="py-20 bg-stone-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex justify-between items-end mb-12">
+                <div>
+                    <h2 class="text-4xl font-bold text-stone-900">Signature Menu</h2>
+                    <p class="text-stone-500 mt-2">Crafted with premium ingredients and lots of love.</p>
+                </div>
+                <button class="text-amber-700 font-bold flex items-center gap-2">View All <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-4 rounded-3xl shadow-sm border border-stone-100 card-hover menu-card">
+                    <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=500" class="w-full h-56 object-cover rounded-2xl mb-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-xl font-bold">The Signature Bun</h3>
+                        <span class="text-amber-700 font-bold">$4.50</span>
+                    </div>
+                    <p class="text-stone-500 text-sm mb-6">Our world-famous bun with a crispy coffee layer and salted butter center.</p>
+                    <button class="w-full py-3 bg-stone-100 hover:bg-amber-700 hover:text-white rounded-xl font-semibold transition flex justify-center gap-2">
+                        <i data-lucide="plus-circle" class="w-5 h-5"></i> Add to Cart
+                    </button>
+                </div>
+
+                <div class="bg-white p-4 rounded-3xl shadow-sm border border-stone-100 card-hover menu-card">
+                    <img src="https://images.unsplash.com/photo-1541167760496-162955ed8a9f?auto=format&fit=crop&q=80&w=500" class="w-full h-56 object-cover rounded-2xl mb-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-xl font-bold">Caramel Macchiato</h3>
+                        <span class="text-amber-700 font-bold">$5.25</span>
+                    </div>
+                    <p class="text-stone-500 text-sm mb-6">Freshly brewed espresso with velvety steamed milk and caramel drizzle.</p>
+                    <button class="w-full py-3 bg-stone-100 hover:bg-amber-700 hover:text-white rounded-xl font-semibold transition flex justify-center gap-2">
+                        <i data-lucide="plus-circle" class="w-5 h-5"></i> Add to Cart
+                    </button>
+                </div>
+
+                <div class="bg-white p-4 rounded-3xl shadow-sm border border-stone-100 card-hover menu-card">
+                    <img src="https://images.unsplash.com/photo-1579954115545-a95591f28bfc?auto=format&fit=crop&q=80&w=500" class="w-full h-56 object-cover rounded-2xl mb-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-xl font-bold">Nutella Bun Twist</h3>
+                        <span class="text-amber-700 font-bold">$5.50</span>
+                    </div>
+                    <p class="text-stone-500 text-sm mb-6">Signature bun topped with generous Nutella and crushed hazelnuts.</p>
+                    <button class="w-full py-3 bg-stone-100 hover:bg-amber-700 hover:text-white rounded-xl font-semibold transition flex justify-center gap-2">
+                        <i data-lucide="plus-circle" class="w-5 h-5"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="deals" class="py-20 px-6">
+        <div class="max-w-7xl mx-auto bg-amber-900 rounded-[40px] p-12 text-white relative overflow-hidden">
+            <div class="absolute right-0 top-0 w-1/3 h-full opacity-20">
+                <i data-lucide="flame" class="w-full h-full"></i>
+            </div>
+            <div class="relative z-10 md:w-1/2">
+                <h2 class="text-4xl font-bold mb-4">Monday Bun-Day! 🥯</h2>
+                <p class="text-amber-200 text-lg mb-8">Buy 2 Signature Buns and get a Fresh Brewed Coffee for absolutely free. Valid every Monday.</p>
+                <div class="flex items-center gap-6">
+                    <div class="bg-amber-800/50 p-4 rounded-2xl border border-amber-700/50">
+                        <p class="text-xs uppercase tracking-widest text-amber-300">Use Code</p>
+                        <p class="text-2xl font-mono font-bold">PAPPA26</p>
+                    </div>
+                    <button class="bg-white text-amber-900 px-8 py-4 rounded-2xl font-bold hover:bg-amber-100 transition">Claim Deal</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-stone-900 text-stone-400 pt-20 pb-10 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12 mb-16">
+            <div class="col-span-1 md:col-span-1">
+                <div class="flex items-center gap-2 text-white mb-6">
+                    <i data-lucide="coffee"></i>
+                    <span class="text-2xl font-bold">Papparoti</span>
+                </div>
+                <p class="text-sm leading-relaxed">
+                    The international coffee bun brand that brought the unique aroma of freshly baked buns to the world since 2003.
+                </p>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-6">Quick Links</h4>
+                <ul class="space-y-4 text-sm">
+                    <li><a href="#" class="hover:text-amber-500 transition">Our Story</a></li>
+                    <li><a href="#" class="hover:text-amber-500 transition">Franchise</a></li>
+                    <li><a href="#" class="hover:text-amber-500 transition">Menu PDF</a></li>
+                    <li><a href="#" class="hover:text-amber-500 transition">Privacy Policy</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-6">Visit Us</h4>
+                <ul class="space-y-4 text-sm">
+                    <li class="flex items-start gap-3">
+                        <i data-lucide="map-pin" class="w-5 h-5 text-amber-500"></i>
+                        <span>123 Baker Street, <br>Downtown Metropolis, NY</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i data-lucide="phone" class="w-5 h-5 text-amber-500"></i>
+                        <span>+1 (555) 000-ROTl</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-6">Follow the Aroma</h4>
+                <div class="flex gap-4">
+                    <a href="#" class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-700 transition"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-700 transition"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-700 transition"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-700 transition"><i data-lucide="message-circle" class="w-5 h-5"></i></a>
+                </div>
+                <div class="mt-8">
+                    <p class="text-xs mb-3">Subscribe for sweet updates</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email" class="bg-stone-800 border-none rounded-l-lg px-4 py-2 w-full focus:ring-1 focus:ring-amber-500">
+                        <button class="bg-amber-700 text-white px-4 py-2 rounded-r-lg"><i data-lucide="send" class="w-4 h-4"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto pt-8 border-t border-stone-800 text-center text-xs">
+            <p>&copy; 2026 Papparoti Global. All Rights Reserved. Designed for Foodies.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero Entrance
+        const tl = gsap.timeline();
+        tl.from(".hero-content", { x: -100, opacity: 0, duration: 1, ease: "power4.out" })
+          .from(".hero-image", { x: 100, opacity: 0, duration: 1, ease: "power4.out" }, "-=0.8")
+          .from("nav", { y: -50, opacity: 0, duration: 0.8 }, "-=0.5");
+
+        // Menu Cards Scroll Animation
+        gsap.from(".menu-card", {
+            scrollTrigger: {
+                trigger: "#menu",
+                start: "top 80%",
+            },
+            y: 50,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: "power2.out"
+        });
+
+        // Deals Banner Entrance
+        gsap.from("#deals .max-w-7xl", {
+            scrollTrigger: {
+                trigger: "#deals",
+                start: "top 80%",
+            },
+            scale: 0.9,
+            opacity: 0,
+            duration: 1,
+            ease: "back.out(1.7)"
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu | Papparoti - The Father of All Buns</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .glass-nav { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
+        .filter-pill.active { background-color: #78350f; color: white; }
+        .menu-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .menu-card:hover { transform: translateY(-8px); }
+        /* Hide scrollbar for category list */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-orange-50/30 text-stone-800">
+
+    <nav class="fixed w-full z-50 glass-nav border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="location.href='#'">
+                <div class="w-10 h-10 bg-amber-700 rounded-full flex items-center justify-center text-white">
+                    <i data-lucide="coffee"></i>
+                </div>
+                <span class="text-2xl font-bold tracking-tighter text-amber-900">Pappa<span class="text-amber-600">roti</span></span>
+            </div>
+
+            <div class="hidden md:flex space-x-8 font-medium text-stone-600">
+                <a href="#" class="hover:text-amber-700 transition">Home</a>
+                <a href="#menu" class="text-amber-700 font-bold border-b-2 border-amber-700">Menu</a>
+                <a href="#" class="hover:text-amber-700 transition">Locations</a>
+                <a href="#" class="hover:text-amber-700 transition">Rewards</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button class="p-2 hover:bg-stone-100 rounded-full relative">
+                    <i data-lucide="shopping-bag"></i>
+                    <span class="absolute top-0 right-0 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">3</span>
+                </button>
+                <div class="flex items-center gap-3 pl-4 border-l border-stone-300">
+                    <img src="https://ui-avatars.com/api/?name=Alex+Dan&background=D4A373&color=fff" alt="Profile" class="w-10 h-10 rounded-full border-2 border-amber-200">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="pt-32 pb-12 px-6 bg-white">
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 class="text-5xl font-bold text-stone-900 mb-4">Our Delicious Menu</h1>
+            <p class="text-stone-500 max-w-2xl mx-auto italic">"From the iconic coffee bun to our signature Karak tea, every item is crafted to perfection."</p>
+        </div>
+    </header>
+
+    <section class="sticky top-[73px] z-40 bg-white/90 backdrop-blur-md border-b border-stone-100 py-4">
+        <div class="max-w-7xl mx-auto px-6 flex items-center justify-center gap-3 overflow-x-auto no-scrollbar">
+            <button class="filter-pill active px-6 py-2 rounded-full border border-stone-200 text-sm font-bold whitespace-nowrap transition">All Items</button>
+            <button class="filter-pill px-6 py-2 rounded-full border border-stone-200 text-sm font-bold whitespace-nowrap transition hover:border-amber-700">Signature Buns</button>
+            <button class="filter-pill px-6 py-2 rounded-full border border-stone-200 text-sm font-bold whitespace-nowrap transition hover:border-amber-700">Hot Coffee</button>
+            <button class="filter-pill px-6 py-2 rounded-full border border-stone-200 text-sm font-bold whitespace-nowrap transition hover:border-amber-700">Cold Brews</button>
+            <button class="filter-pill px-6 py-2 rounded-full border border-stone-200 text-sm font-bold whitespace-nowrap transition hover:border-amber-700">Karak Tea</button>
+            <button class="filter-pill px-6 py-2 rounded-full border border-stone-200 text-sm font-bold whitespace-nowrap transition hover:border-amber-700">Savory Bites</button>
+        </div>
+    </section>
+
+    <main id="menu-grid" class="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+
+        <div class="menu-item group" data-category="Signature Buns">
+            <div class="bg-white rounded-[32px] p-4 shadow-sm border border-stone-100 menu-card overflow-hidden">
+                <div class="relative h-48 mb-4 overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <span class="absolute top-3 left-3 bg-amber-600 text-white text-[10px] font-bold px-2 py-1 rounded-lg uppercase">Bestseller</span>
+                </div>
+                <div class="px-2">
+                    <h3 class="text-lg font-bold text-stone-900 mb-1">Pappa Signature Bun</h3>
+                    <p class="text-xs text-stone-500 mb-4 line-clamp-2">The bun that started it all. Crispy coffee outer layer with a melting butter center.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xl font-bold text-amber-800">$4.50</span>
+                        <button class="bg-stone-900 text-white p-2 rounded-xl hover:bg-amber-700 transition">
+                            <i data-lucide="plus" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-item group" data-category="Signature Buns">
+            <div class="bg-white rounded-[32px] p-4 shadow-sm border border-stone-100 menu-card overflow-hidden">
+                <div class="relative h-48 mb-4 overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1589119908995-c6837fa14848?q=80&w=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                </div>
+                <div class="px-2">
+                    <h3 class="text-lg font-bold text-stone-900 mb-1">Lotus Biscoff Bun</h3>
+                    <p class="text-xs text-stone-500 mb-4 line-clamp-2">Signature bun topped with creamy Biscoff spread and crushed cookie crumbles.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xl font-bold text-amber-800">$5.75</span>
+                        <button class="bg-stone-900 text-white p-2 rounded-xl hover:bg-amber-700 transition">
+                            <i data-lucide="plus" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-item group" data-category="Hot Coffee">
+            <div class="bg-white rounded-[32px] p-4 shadow-sm border border-stone-100 menu-card overflow-hidden">
+                <div class="relative h-48 mb-4 overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1541167760496-162955ed8a9f?q=80&w=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <span class="absolute top-3 left-3 bg-stone-800 text-white text-[10px] font-bold px-2 py-1 rounded-lg uppercase">Premium Arabica</span>
+                </div>
+                <div class="px-2">
+                    <h3 class="text-lg font-bold text-stone-900 mb-1">Spanish Latte</h3>
+                    <p class="text-xs text-stone-500 mb-4 line-clamp-2">A sweet, creamy espresso-based drink with condensed milk.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xl font-bold text-amber-800">$6.25</span>
+                        <button class="bg-stone-900 text-white p-2 rounded-xl hover:bg-amber-700 transition">
+                            <i data-lucide="plus" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-item group" data-category="Karak Tea">
+            <div class="bg-white rounded-[32px] p-4 shadow-sm border border-stone-100 menu-card overflow-hidden">
+                <div class="relative h-48 mb-4 overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1594631252845-29fc458695d7?q=80&w=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                </div>
+                <div class="px-2">
+                    <h3 class="text-lg font-bold text-stone-900 mb-1">Signature Karak Tea</h3>
+                    <p class="text-xs text-stone-500 mb-4 line-clamp-2">Authentic spiced tea slow-brewed with cardamom, saffron, and milk.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xl font-bold text-amber-800">$4.00</span>
+                        <button class="bg-stone-900 text-white p-2 rounded-xl hover:bg-amber-700 transition">
+                            <i data-lucide="plus" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-item group" data-category="Cold Brews">
+            <div class="bg-white rounded-[32px] p-4 shadow-sm border border-stone-100 menu-card overflow-hidden">
+                <div class="relative h-48 mb-4 overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?q=80&w=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                </div>
+                <div class="px-2">
+                    <h3 class="text-lg font-bold text-stone-900 mb-1">Double Choco Frappe</h3>
+                    <p class="text-xs text-stone-500 mb-4 line-clamp-2">Blended iced coffee with premium dark chocolate and whipped cream.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xl font-bold text-amber-800">$6.95</span>
+                        <button class="bg-stone-900 text-white p-2 rounded-xl hover:bg-amber-700 transition">
+                            <i data-lucide="plus" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-item group" data-category="Savory Bites">
+            <div class="bg-white rounded-[32px] p-4 shadow-sm border border-stone-100 menu-card overflow-hidden">
+                <div class="relative h-48 mb-4 overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1539252554453-80ab65ce3586?q=80&w=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                </div>
+                <div class="px-2">
+                    <h3 class="text-lg font-bold text-stone-900 mb-1">Turkey & Cheese Croissant</h3>
+                    <p class="text-xs text-stone-500 mb-4 line-clamp-2">Buttery, flaky croissant stuffed with smoked turkey and melted emmental.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xl font-bold text-amber-800">$7.50</span>
+                        <button class="bg-stone-900 text-white p-2 rounded-xl hover:bg-amber-700 transition">
+                            <i data-lucide="plus" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-item group" data-category="Signature Buns">
+            <div class="bg-white rounded-[32px] p-4 shadow-sm border border-stone-100 menu-card overflow-hidden">
+                <div class="relative h-48 mb-4 overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                </div>
+                <div class="px-2">
+                    <h3 class="text-lg font-bold text-stone-900 mb-1">Nutella Hazelnut Bun</h3>
+                    <p class="text-xs text-stone-500 mb-4 line-clamp-2">Classic bun injected with warm Nutella and topped with toasted nuts.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xl font-bold text-amber-800">$5.90</span>
+                        <button class="bg-stone-900 text-white p-2 rounded-xl hover:bg-amber-700 transition">
+                            <i data-lucide="plus" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-item group" data-category="Hot Coffee">
+            <div class="bg-white rounded-[32px] p-4 shadow-sm border border-stone-100 menu-card overflow-hidden">
+                <div class="relative h-48 mb-4 overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1572286258217-40142c1c6a70?q=80&w=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                </div>
+                <div class="px-2">
+                    <h3 class="text-lg font-bold text-stone-900 mb-1">Flat White</h3>
+                    <p class="text-xs text-stone-500 mb-4 line-clamp-2">Double shot of ristretto with a thin layer of velvety micro-foam milk.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xl font-bold text-amber-800">$4.50</span>
+                        <button class="bg-stone-900 text-white p-2 rounded-xl hover:bg-amber-700 transition">
+                            <i data-lucide="plus" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-stone-900 text-stone-400 pt-20 pb-10 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12 mb-16">
+            <div class="col-span-1">
+                <div class="flex items-center gap-2 text-white mb-6">
+                    <i data-lucide="coffee"></i>
+                    <span class="text-2xl font-bold">Papparoti</span>
+                </div>
+                <p class="text-sm">The international coffee bun brand that brought the unique aroma of freshly baked buns to the world since 2003.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-6">Explore</h4>
+                <ul class="space-y-4 text-sm">
+                    <li><a href="#" class="hover:text-amber-500">Our Menu</a></li>
+                    <li><a href="#" class="hover:text-amber-500">Nutrition Info</a></li>
+                    <li><a href="#" class="hover:text-amber-500">Order Online</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-6">Contact</h4>
+                <p class="text-sm mb-4">123 Baker Street, Metropolis, NY</p>
+                <p class="text-sm">+1 (555) 000-ROTl</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-6">Socials</h4>
+                <div class="flex gap-4">
+                    <a href="#" class="hover:text-amber-500"><i data-lucide="instagram"></i></a>
+                    <a href="#" class="hover:text-amber-500"><i data-lucide="facebook"></i></a>
+                    <a href="#" class="hover:text-amber-500"><i data-lucide="twitter"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto pt-8 border-t border-stone-800 text-center text-xs">
+            <p>&copy; 2026 Papparoti Global. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // GSAP Menu Entrance
+        gsap.from(".menu-item", {
+            opacity: 0,
+            y: 30,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: "power2.out",
+            delay: 0.2
+        });
+
+        // Filter Logic
+        const filterPills = document.querySelectorAll('.filter-pill');
+        const menuItems = document.querySelectorAll('.menu-item');
+
+        filterPills.forEach(pill => {
+            pill.addEventListener('click', () => {
+                // UI Toggle
+                filterPills.forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+
+                const filterValue = pill.textContent;
+
+                // Animate out items
+                gsap.to(".menu-item", {
+                    opacity: 0,
+                    scale: 0.9,
+                    duration: 0.2,
+                    onComplete: () => {
+                        menuItems.forEach(item => {
+                            if (filterValue === 'All Items' || item.getAttribute('data-category') === filterValue) {
+                                item.style.display = 'block';
+                            } else {
+                                item.style.display = 'none';
+                            }
+                        });
+                        // Animate in filtered items
+                        gsap.to(".menu-item", {
+                            opacity: 1,
+                            scale: 1,
+                            duration: 0.4,
+                            stagger: 0.05,
+                            ease: "back.out(1.7)"
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

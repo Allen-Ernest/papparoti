@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders | Papparoti</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .glass-nav { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .order-card.active { border-color: #b45309; background-color: #fffbeb; }
+        .step-active { color: #b45309; font-weight: 700; }
+        .step-line { height: 2px; flex-grow: 1; background: #e7e5e4; }
+        .step-line.filled { background: #b45309; }
+    </style>
+</head>
+<body class="bg-orange-50/30 text-stone-800">
+
+    <nav class="fixed w-full z-50 glass-nav border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="location.href='#'">
+                <div class="w-10 h-10 bg-amber-700 rounded-full flex items-center justify-center text-white">
+                    <i data-lucide="coffee"></i>
+                </div>
+                <span class="text-2xl font-bold tracking-tighter text-amber-900">Pappa<span class="text-amber-600">roti</span></span>
+            </div>
+
+            <div class="hidden md:flex space-x-8 font-medium text-stone-600">
+                <a href="#" class="hover:text-amber-700 transition">Home</a>
+                <a href="#" class="hover:text-amber-700 transition">Menu</a>
+                <a href="#" class="text-amber-700 font-bold border-b-2 border-amber-700">My Orders</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-3 pl-4 border-l border-stone-300">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-xs text-stone-500">Gold Member</p>
+                        <p class="text-sm font-semibold">Alex Dan</p>
+                    </div>
+                    <img src="https://ui-avatars.com/api/?name=Alex+Dan&background=D4A373&color=fff" class="w-10 h-10 rounded-full border-2 border-amber-200">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-20 px-6 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row gap-8">
+
+            <div class="w-full md:w-1/3 space-y-6">
+                <h1 class="text-3xl font-bold text-stone-900 mb-8">Order History</h1>
+
+                <div class="order-card active p-5 rounded-[24px] bg-white border-2 border-amber-700 shadow-sm cursor-pointer transition-all hover:shadow-md" id="active-trigger">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">In Progress</span>
+                        <span class="text-xs text-stone-400">#PR-8821</span>
+                    </div>
+                    <h3 class="font-bold text-stone-900">Signature Bun & Karak</h3>
+                    <p class="text-sm text-stone-500 mb-4">Ordered: Today, 10:45 AM</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-amber-800">$18.50</span>
+                        <div class="flex -space-x-2">
+                            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=100" class="w-8 h-8 rounded-full border-2 border-white object-cover">
+                            <img src="https://images.unsplash.com/photo-1594631252845-29fc458695d7?q=80&w=100" class="w-8 h-8 rounded-full border-2 border-white object-cover">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-card p-5 rounded-[24px] bg-white border border-stone-200 shadow-sm cursor-pointer transition-all hover:bg-stone-50">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="bg-stone-100 text-stone-500 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">Completed</span>
+                        <span class="text-xs text-stone-400">#PR-7710</span>
+                    </div>
+                    <h3 class="font-bold text-stone-900">Lotus Biscoff Party Pack</h3>
+                    <p class="text-sm text-stone-500 mb-4">Ordered: Feb 12, 2026</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-stone-600">$42.00</span>
+                        <button class="text-xs font-bold text-amber-700 flex items-center gap-1 hover:underline">
+                            <i data-lucide="rotate-ccw" class="w-3 h-3"></i> Reorder
+                        </button>
+                    </div>
+                </div>
+
+                <div class="order-card p-5 rounded-[24px] bg-white border border-stone-200 shadow-sm cursor-pointer transition-all hover:bg-stone-50">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="bg-stone-100 text-stone-500 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">Completed</span>
+                        <span class="text-xs text-stone-400">#PR-7690</span>
+                    </div>
+                    <h3 class="font-bold text-stone-900">Breakfast Combo</h3>
+                    <p class="text-sm text-stone-500 mb-4">Ordered: Feb 08, 2026</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-stone-600">$12.25</span>
+                        <button class="text-xs font-bold text-amber-700 flex items-center gap-1 hover:underline">
+                            <i data-lucide="rotate-ccw" class="w-3 h-3"></i> Reorder
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full md:w-2/3" id="details-panel">
+                <div class="bg-white rounded-[40px] p-8 border border-stone-100 shadow-xl shadow-stone-200/50">
+
+                    <div class="mb-12">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold">Track Order</h2>
+                            <p class="text-sm font-medium text-amber-700 bg-amber-50 px-3 py-1 rounded-lg">Arriving in 12 mins</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="flex flex-col items-center">
+                                <div class="w-10 h-10 rounded-full bg-amber-700 text-white flex items-center justify-center">
+                                    <i data-lucide="check" class="w-5 h-5"></i>
+                                </div>
+                                <span class="text-[10px] mt-2 font-bold uppercase">Confirmed</span>
+                            </div>
+                            <div class="step-line filled"></div>
+                            <div class="flex flex-col items-center">
+                                <div class="w-10 h-10 rounded-full bg-amber-700 text-white flex items-center justify-center relative">
+                                    <i data-lucide="flame" class="w-5 h-5"></i>
+                                    <span class="absolute inset-0 rounded-full bg-amber-700 animate-ping opacity-25"></span>
+                                </div>
+                                <span class="text-[10px] mt-2 font-bold uppercase text-amber-700">Baking</span>
+                            </div>
+                            <div class="step-line"></div>
+                            <div class="flex flex-col items-center">
+                                <div class="w-10 h-10 rounded-full bg-stone-100 text-stone-400 flex items-center justify-center">
+                                    <i data-lucide="bike" class="w-5 h-5"></i>
+                                </div>
+                                <span class="text-[10px] mt-2 font-bold uppercase text-stone-400">On Way</span>
+                            </div>
+                            <div class="step-line"></div>
+                            <div class="flex flex-col items-center">
+                                <div class="w-10 h-10 rounded-full bg-stone-100 text-stone-400 flex items-center justify-center">
+                                    <i data-lucide="package-check" class="w-5 h-5"></i>
+                                </div>
+                                <span class="text-[10px] mt-2 font-bold uppercase text-stone-400">Delivered</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="border-stone-100 mb-8">
+
+                    <h3 class="font-bold text-lg mb-6">Items Summary</h3>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center gap-4">
+                            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=100" class="w-16 h-16 rounded-2xl object-cover">
+                            <div class="flex-grow">
+                                <h4 class="font-bold text-stone-900">Signature Bun</h4>
+                                <p class="text-xs text-stone-500">Qty: 2 • Extra Butter</p>
+                            </div>
+                            <span class="font-bold">$9.00</span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <img src="https://images.unsplash.com/photo-1594631252845-29fc458695d7?q=80&w=100" class="w-16 h-16 rounded-2xl object-cover">
+                            <div class="flex-grow">
+                                <h4 class="font-bold text-stone-900">Signature Karak Tea</h4>
+                                <p class="text-xs text-stone-500">Qty: 1 • Large</p>
+                            </div>
+                            <span class="font-bold">$4.00</span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <img src="https://images.unsplash.com/photo-1541167760496-162955ed8a9f?q=80&w=100" class="w-16 h-16 rounded-2xl object-cover">
+                            <div class="flex-grow">
+                                <h4 class="font-bold text-stone-900">Spanish Latte</h4>
+                                <p class="text-xs text-stone-500">Qty: 1 • Iced</p>
+                            </div>
+                            <span class="font-bold">$5.50</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-stone-50 rounded-2xl p-6 space-y-3">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-stone-500">Subtotal</span>
+                            <span class="font-semibold">$18.50</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-stone-500">Delivery Fee</span>
+                            <span class="text-green-600 font-bold">FREE</span>
+                        </div>
+                        <div class="flex justify-between pt-3 border-t border-stone-200">
+                            <span class="font-bold text-lg">Total</span>
+                            <span class="font-bold text-lg text-amber-800">$18.50</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 flex gap-4">
+                        <button class="flex-1 bg-stone-900 text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-stone-800 transition">
+                            <i data-lucide="message-circle" class="w-5 h-5"></i> Chat with Rider
+                        </button>
+                        <button class="px-6 border border-stone-200 rounded-2xl hover:bg-stone-50 transition">
+                            <i data-lucide="help-circle" class="text-stone-400"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="bg-stone-900 text-stone-400 py-10 px-6 text-center">
+        <p class="text-sm">&copy; 2026 Papparoti Global. One Bun at a Time.</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // GSAP Animations
+        gsap.from(".order-card", {
+            opacity: 0,
+            x: -20,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: "power2.out"
+        });
+
+        gsap.from("#details-panel", {
+            opacity: 0,
+            y: 20,
+            duration: 0.8,
+            delay: 0.3,
+            ease: "power2.out"
+        });
+    </script>
+</body>
+</html>
