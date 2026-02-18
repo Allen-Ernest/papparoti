@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Menu
+from django.utils import timezone
 
 # Create your views here.
 def get_menus(request):
@@ -11,18 +12,19 @@ def add_menu(request):
         name = request.POST.get("name")
         price = request.POST.get("price")
         description = request.POST.get("description")
+        date_added = timezone.now()
         img = request.POST.get("image")
 
         if name and price and description and img:
-            menu = Menu.objects.create(name=name, price=price, description=description, img=img)
+            menu = Menu.objects.create(name=name, price=price, description=description, image_url=img, date_added=date_added)
             menu.save()
-            return render(request, "menu.html", {"menus": [menu]})
+            return redirect("admin_dashboard")
         else:
-            context = {"Error": "Invalid Request"}
-            return render(request, "menu.html", {"menus": []})
+            context = {"Error": "Invalid Request"} #TODO: Use message instead of context for redirects
+            return redirect("admin_dashboard")
     else:
-        context = {"Error": "Bad Request"}
-        return render(request, "menu.html")
+        #context = {"Error": "Bad Request"}
+        return redirect("admin_dashboard")
 
 def delete_menu(request):
     if request.method == "POST":

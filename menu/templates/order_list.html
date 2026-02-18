@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Management | Papparoti Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #fcfaf8; }
+        .sidebar-link.active { background: #78350f; color: white; box-shadow: 0 10px 15px -3px rgba(120, 53, 15, 0.3); }
+        .menu-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .menu-card:hover { transform: translateY(-8px); border-color: #d4a373; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05); }
+        .modal-overlay { background: rgba(28, 25, 23, 0.7); backdrop-filter: blur(8px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="text-stone-800 antialiased">
+
+    <aside class="fixed left-0 top-0 h-screen w-64 bg-white border-r border-stone-200 p-6 hidden lg:flex flex-col z-50">
+        <div class="flex items-center gap-2 mb-12">
+            <div class="w-8 h-8 bg-amber-700 rounded-lg flex items-center justify-center text-white">
+                <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+            </div>
+            <span class="text-xl font-bold tracking-tighter text-amber-900">Pappa<span class="text-amber-600">Admin</span></span>
+        </div>
+
+        <nav class="space-y-2 flex-grow">
+            <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl font-medium text-stone-500 hover:bg-stone-50 transition">
+                <i data-lucide="bar-chart-3" class="w-5 h-5"></i> Overview
+            </a>
+            <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl font-medium text-stone-500 hover:bg-stone-50 transition">
+                <i data-lucide="shopping-cart" class="w-5 h-5"></i> Orders
+            </a>
+            <a href="#" class="sidebar-link active flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold transition">
+                <i data-lucide="book-open" class="w-5 h-5"></i> Menus
+            </a>
+            <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl font-medium text-stone-500 hover:bg-stone-50 transition">
+                <i data-lucide="package" class="w-5 h-5"></i> Inventory
+            </a>
+            <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl font-medium text-stone-500 hover:bg-stone-50 transition">
+                <i data-lucide="users" class="w-5 h-5"></i> Customers
+            </a>
+        </nav>
+    </aside>
+
+    <main class="lg:ml-64 p-6 md:p-10">
+
+        <header class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+            <div>
+                <h1 class="text-3xl font-bold text-stone-900">Menu Catalog</h1>
+                <p class="text-stone-500 text-sm">Control your bakery offerings and pricing.</p>
+            </div>
+            <button onclick="toggleModal(true)" class="bg-stone-900 text-white px-6 py-4 rounded-2xl font-bold text-sm flex items-center gap-2 hover:bg-amber-800 transition shadow-xl shadow-stone-200">
+                <i data-lucide="plus" class="w-5 h-5"></i> Create New Item
+            </button>
+        </header>
+
+        <div class="flex flex-col xl:flex-row gap-6 mb-10">
+            <div class="relative flex-grow">
+                <i data-lucide="search" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400"></i>
+                <input type="text" placeholder="Search menu items by name, category, or flavor..." class="w-full pl-14 pr-6 py-4 bg-white border border-stone-200 rounded-[24px] focus:outline-none focus:border-amber-700 focus:ring-4 focus:ring-amber-50 transition shadow-sm">
+            </div>
+            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2">
+                <button class="px-6 py-3 bg-amber-700 text-white rounded-2xl text-xs font-bold whitespace-nowrap shadow-lg shadow-amber-900/20">All Items</button>
+                <button class="px-6 py-3 bg-white text-stone-500 border border-stone-200 rounded-2xl text-xs font-bold hover:bg-stone-50 whitespace-nowrap transition">Signature Buns</button>
+                <button class="px-6 py-3 bg-white text-stone-500 border border-stone-200 rounded-2xl text-xs font-bold hover:bg-stone-50 whitespace-nowrap transition">Coffee & Lattes</button>
+                <button class="px-6 py-3 bg-white text-stone-500 border border-stone-200 rounded-2xl text-xs font-bold hover:bg-stone-50 whitespace-nowrap transition">Cold Brews</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
+            <div class="menu-card bg-white border border-stone-100 rounded-[32px] overflow-hidden group">
+                <div class="h-48 bg-stone-100 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1600431521340-491eca880813?auto=format&fit=crop&q=80&w=400" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    <div class="absolute top-4 right-4">
+                        <span class="bg-green-100 text-green-700 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase">Active</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-lg font-bold text-stone-900 leading-tight">Original Signature Bun</h3>
+                        <span class="text-amber-700 font-bold">$4.50</span>
+                    </div>
+                    <p class="text-stone-400 text-xs mb-6 line-clamp-2">Our world-famous coffee-coated bun with a salted butter filling.</p>
+                    <div class="flex items-center justify-between pt-4 border-t border-stone-50">
+                        <div class="flex gap-2">
+                            <button class="p-2 bg-stone-50 rounded-xl hover:bg-stone-100 transition text-stone-500"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                            <button class="p-2 bg-stone-50 rounded-xl hover:bg-red-50 transition text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" class="sr-only peer" checked>
+                            <div class="w-11 h-6 bg-stone-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-700"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-card bg-white border border-stone-100 rounded-[32px] overflow-hidden group">
+                <div class="h-48 bg-stone-100 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1572286258217-400493867059?auto=format&fit=crop&q=80&w=400" class="w-full h-full object-cover group-hover:scale-110 transition duration-700 opacity-60">
+                    <div class="absolute top-4 right-4">
+                        <span class="bg-stone-200 text-stone-600 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase">Out of Stock</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-lg font-bold text-stone-900 leading-tight">Nutella Hazelnut Bun</h3>
+                        <span class="text-amber-700 font-bold">$5.50</span>
+                    </div>
+                    <p class="text-stone-400 text-xs mb-6 line-clamp-2">Rich Nutella glaze topped with crushed roasted hazelnuts.</p>
+                    <div class="flex items-center justify-between pt-4 border-t border-stone-50">
+                        <div class="flex gap-2">
+                            <button class="p-2 bg-stone-50 rounded-xl hover:bg-stone-100 transition text-stone-500"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                            <button class="p-2 bg-stone-50 rounded-xl hover:bg-red-50 transition text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" class="sr-only peer">
+                            <div class="w-11 h-6 bg-stone-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-700"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="item-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-6">
+        <div class="modal-overlay absolute inset-0" onclick="toggleModal(false)"></div>
+        <div class="bg-white rounded-[40px] w-full max-w-2xl relative z-10 overflow-hidden shadow-2xl" id="modal-content">
+            <div class="flex h-full flex-col md:flex-row">
+                <div class="w-full md:w-1/2 bg-stone-50 p-10 flex flex-col items-center justify-center border-r border-stone-100">
+                    <div class="w-full aspect-square bg-white border-2 border-dashed border-stone-200 rounded-[32px] flex flex-col items-center justify-center group cursor-pointer hover:border-amber-700 transition">
+                        <i data-lucide="image-plus" class="w-12 h-12 text-stone-300 group-hover:text-amber-700 mb-4 transition"></i>
+                        <p class="text-xs font-bold text-stone-400">Click to upload photo</p>
+                    </div>
+                    <p class="text-[10px] text-stone-400 mt-6 text-center uppercase tracking-widest font-bold leading-relaxed">JPG, PNG or WEBP<br>Recommended: 800x800px</p>
+                </div>
+
+                <div class="w-full md:w-1/2 p-10">
+                    <h3 class="text-2xl font-bold text-stone-900 mb-2">New Menu Item</h3>
+                    <p class="text-sm text-stone-500 mb-8">Add a new flavor to the Papparoti family.</p>
+
+                    <form class="space-y-5">
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-bold text-stone-400 uppercase tracking-widest ml-1">Item Name</label>
+                            <input type="text" placeholder="e.g. Lotus Biscoff Bun" class="w-full px-5 py-3.5 bg-stone-50 border border-stone-100 rounded-2xl outline-none focus:border-stone-900 text-sm">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-bold text-stone-400 uppercase tracking-widest ml-1">Price ($)</label>
+                                <input type="number" step="0.01" placeholder="4.50" class="w-full px-5 py-3.5 bg-stone-50 border border-stone-100 rounded-2xl outline-none focus:border-stone-900 text-sm">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-bold text-stone-400 uppercase tracking-widest ml-1">Category</label>
+                                <select class="w-full px-5 py-3.5 bg-stone-50 border border-stone-100 rounded-2xl outline-none focus:border-stone-900 text-sm appearance-none">
+                                    <option>Buns</option>
+                                    <option>Hot Coffee</option>
+                                    <option>Cold Brew</option>
+                                    <option>Tea</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-bold text-stone-400 uppercase tracking-widest ml-1">Description</label>
+                            <textarea rows="3" placeholder="Tell the customers about this delicious treat..." class="w-full px-5 py-3.5 bg-stone-50 border border-stone-100 rounded-2xl outline-none focus:border-stone-900 text-sm resize-none"></textarea>
+                        </div>
+
+                        <div class="pt-6 flex gap-3">
+                            <button type="button" onclick="toggleModal(false)" class="flex-1 px-4 py-4 border border-stone-200 rounded-2xl font-bold text-stone-500 hover:bg-stone-50 transition text-sm">Cancel</button>
+                            <button type="submit" class="flex-1 px-4 py-4 bg-stone-900 text-white rounded-2xl font-bold hover:bg-amber-800 transition text-sm">Add Item</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function toggleModal(show) {
+            const modal = document.getElementById('item-modal');
+            const content = document.getElementById('modal-content');
+
+            if (show) {
+                modal.classList.remove('hidden');
+                gsap.fromTo(content, { scale: 0.9, opacity: 0, y: 30 }, { scale: 1, opacity: 1, y: 0, duration: 0.5, ease: "back.out(1.5)" });
+            } else {
+                gsap.to(content, { scale: 0.9, opacity: 0, y: 30, duration: 0.3, onComplete: () => modal.classList.add('hidden') });
+            }
+        }
+
+        // Entrance animation for cards
+        gsap.from(".menu-card", {
+            opacity: 0,
+            y: 40,
+            stagger: 0.1,
+            duration: 1,
+            ease: "power4.out",
+            delay: 0.2
+        });
+    </script>
+</body>
+</html>

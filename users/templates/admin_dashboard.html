@@ -31,6 +31,9 @@
                 <i data-lucide="bar-chart-3" class="w-5 h-5"></i> Overview
             </a>
             <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl font-medium text-stone-500 hover:bg-stone-50 transition">
+                <i data-lucide="coffee" class="w-5 h-5"></i> Menus <span class="ml-auto bg-amber-100 text-amber-700 text-[10px] px-2 py-1 rounded-full">12</span>
+            </a>
+            <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl font-medium text-stone-500 hover:bg-stone-50 transition">
                 <i data-lucide="shopping-cart" class="w-5 h-5"></i> Orders <span class="ml-auto bg-amber-100 text-amber-700 text-[10px] px-2 py-1 rounded-full">12</span>
             </a>
             <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl font-medium text-stone-500 hover:bg-stone-50 transition">
@@ -60,7 +63,7 @@
         <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
             <div>
                 <h1 class="text-3xl font-bold text-stone-900">Executive Overview</h1>
-                <p class="text-stone-500 text-sm">Welcome back, Head Baker Alex.</p>
+                <p class="text-stone-500 text-sm">Welcome back, Chief Administrator {{user.first_name}}.</p>
             </div>
             <div class="flex items-center gap-4">
                 <div class="relative">
@@ -70,8 +73,8 @@
                     </button>
                 </div>
                 <div class="h-10 w-[1px] bg-stone-200 mx-2"></div>
-                <button class="bg-stone-900 text-white px-5 py-3 rounded-2xl font-bold text-sm flex items-center gap-2 hover:bg-amber-800 transition shadow-lg shadow-stone-200">
-                    <i data-lucide="plus" class="w-4 h-4"></i> New Product
+                <button onclick="openMenuModal()" class="bg-stone-900 text-white px-5 py-3 rounded-2xl font-bold text-sm flex items-center gap-2 hover:bg-amber-800 transition shadow-lg shadow-stone-200">
+                    <i data-lucide="plus" class="w-4 h-4"></i> New Menu
                 </button>
             </div>
         </header>
@@ -209,6 +212,62 @@
         </div>
     </main>
 
+    <!-- Add Menu Modal -->
+<div id="menuModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center z-50">
+
+    <div id="menuModalContent" class="bg-white w-full max-w-lg rounded-[40px] p-10 border border-stone-100 shadow-2xl relative scale-95 opacity-0">
+
+        <!-- Close Button -->
+        <button onclick="closeMenuModal()" class="absolute top-6 right-6 text-stone-400 hover:text-stone-900 transition">
+            <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-stone-900">Add New Menu Item</h2>
+            <p class="text-sm text-stone-500">Create a new bakery offering.</p>
+        </div>
+
+        <form method="post" action="{% url 'add_menu' %}" class="space-y-5">
+            {% csrf_token %}
+
+            <div class="space-y-2">
+                <label class="text-[10px] font-bold text-stone-400 uppercase tracking-widest ml-1">Menu Name</label>
+                <input type="text" name="name"
+                       class="w-full px-4 py-4 bg-stone-50 border border-stone-100 rounded-2xl focus:outline-none focus:border-stone-900 focus:ring-1 focus:ring-stone-900 transition text-sm"
+                       required>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-bold text-stone-400 uppercase tracking-widest ml-1">Price ($)</label>
+                    <input type="number" name="price"
+                           class="w-full px-4 py-4 bg-stone-50 border border-stone-100 rounded-2xl focus:outline-none focus:border-stone-900 focus:ring-1 focus:ring-stone-900 transition text-sm"
+                           required>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-[10px] font-bold text-stone-400 uppercase tracking-widest ml-1">Image URL</label>
+                    <input type="text" name="image"
+                           class="w-full px-4 py-4 bg-stone-50 border border-stone-100 rounded-2xl focus:outline-none focus:border-stone-900 focus:ring-1 focus:ring-stone-900 transition text-sm"
+                           required>
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <label class="text-[10px] font-bold text-stone-400 uppercase tracking-widest ml-1">Description</label>
+                <textarea name="description" rows="3"
+                          class="w-full px-4 py-4 bg-stone-50 border border-stone-100 rounded-2xl focus:outline-none focus:border-stone-900 focus:ring-1 focus:ring-stone-900 transition text-sm resize-none"
+                          required></textarea>
+            </div>
+
+            <button type="submit"
+                    class="w-full bg-stone-900 text-white py-4 rounded-2xl font-bold hover:bg-amber-800 transition shadow-lg shadow-stone-200">
+                Save Menu Item
+            </button>
+        </form>
+    </div>
+</div>
+
     <script>
         lucide.createIcons();
 
@@ -229,6 +288,38 @@
             delay: 0.5,
             ease: "power2.out"
         });
+
+        function openMenuModal() {
+    const modal = document.getElementById('menuModal');
+    const content = document.getElementById('menuModalContent');
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    gsap.to(content, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.4,
+        ease: "power3.out"
+    });
+}
+
+function closeMenuModal() {
+    const modal = document.getElementById('menuModal');
+    const content = document.getElementById('menuModalContent');
+
+    gsap.to(content, {
+        opacity: 0,
+        scale: 0.95,
+        duration: 0.3,
+        ease: "power3.in",
+        onComplete: () => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+    });
+}
+
     </script>
 </body>
 </html>

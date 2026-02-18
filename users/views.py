@@ -1,13 +1,30 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from users.models import User, AdminProfile, ClientProfile
+from .models import User, ClientProfile
 
 def get_home_page(request):
     return render(request, 'home.html')
 
 def get_client_login_page(request):
     return render(request, 'auth.html')
+
+def login_client(request):
+    if request.method == "POST":
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        user = authenticate(request, email=email, password=password)
+
+        if user is not None and user.role == 'client':
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, "Invalid credentials")
+            return redirect('login')
+    else:
+        messages.error(request, "Bad request")
+        return redirect('auth')
 
 def register_client(request):
     if request.method == "POST":
@@ -48,12 +65,3 @@ def login_client(request):
         else:
             messages.error(request, 'Invalid Credentials')
             return redirect('auth')
-
-#admin methods
-def register_admin(request):
-    if request.method == "POST":
-        firt_name = request.POST['first_name']
-        last_name = request.POST['last_name']
-        email = request.POST['email']
-        password = request.POST['password']
-        confirm_password = request.POST['confirm_password']
