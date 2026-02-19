@@ -85,6 +85,7 @@
             <div class="w-full md:w-1/2 p-8 md:p-16 flex flex-col justify-center relative bg-white">
 
                 <form method="post" action="{% url 'login_client' %}" id="login-form" class="space-y-8">
+                    {% csrf_token %}
                     <div>
                         <h1 class="text-3xl font-bold text-stone-900 mb-2">Welcome Back</h1>
                         <p class="text-stone-500">Please enter your details to sign in.</p>
@@ -111,6 +112,18 @@
                                 <input name="password" type="password" placeholder="••••••••"
                                     class="w-full pl-12 pr-4 py-4 bg-stone-50 border border-stone-100 rounded-2xl focus:outline-none focus:border-amber-700 transition" required>
                             </div>
+                            {% for message in messages %}
+                                <div class="p-4 mb-4 text-sm rounded-lg
+                                {% if message.tags == 'error' %}
+                                   text-red-800 bg-red-50
+                                {% elif message.tags == 'success' %}
+                                   text-green-800 bg-green-50
+                                {% endif %}
+                                   ">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                                <p class="text-red-600 text-sm mt-2">{{ message }}</p>
                         </div>
                     </div>
 

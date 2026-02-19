@@ -4,6 +4,7 @@ from django.db import models
 class Order(models.Model):
     client = models.ForeignKey('users.ClientProfile', on_delete=models.CASCADE, related_name='orders')
     created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, default='pending') #could be pending, completed, cancelled
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')

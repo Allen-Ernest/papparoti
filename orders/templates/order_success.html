@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baking in Progress! | Papparoti</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #fdfcfb; }
+        .success-glow { box-shadow: 0 20px 50px -12px rgba(180, 83, 9, 0.15); }
+        .progress-line { height: 4px; background: #e7e5e4; border-radius: 2px; position: relative; overflow: hidden; }
+        .progress-active { height: 100%; background: #78350f; width: 0%; transition: width 1s ease; }
+        .confetti { position: absolute; pointer-events: none; z-index: 10; }
+        .step-node.active { border-color: #78350f; background: #78350f; color: white; }
+    </style>
+</head>
+<body class="text-stone-800 antialiased overflow-x-hidden">
+
+    <main class="min-h-screen flex flex-col items-center justify-center p-6 relative">
+        
+        <div id="success-container" class="relative mb-8">
+            <div class="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center text-white success-glow z-20 relative">
+                <i data-lucide="check" class="w-12 h-12 stroke-[3]"></i>
+            </div>
+            <div class="absolute inset-0 bg-green-500/20 rounded-full animate-ping"></div>
+        </div>
+
+        <div class="text-center max-w-md mb-12">
+            <h1 class="text-4xl font-bold text-stone-900 mb-2">Order Confirmed!</h1>
+            <p class="text-stone-500">Order <span class="font-mono font-bold text-amber-700">#PR-9021</span> is being prepared with love.</p>
+        </div>
+
+        <div class="w-full max-w-2xl bg-white rounded-[40px] p-8 md:p-12 border border-stone-100 shadow-sm mb-10">
+            <div class="flex justify-between items-center mb-10">
+                <div class="text-left">
+                    <p class="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Est. Delivery</p>
+                    <p class="text-xl font-bold text-stone-900">12:45 PM</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Status</p>
+                    <p class="text-xl font-bold text-amber-700 flex items-center gap-2 justify-end">
+                        <span class="w-2 h-2 bg-amber-700 rounded-full animate-pulse"></span> Baking
+                    </p>
+                </div>
+            </div>
+
+            <div class="relative mb-16">
+                <div class="progress-line">
+                    <div id="main-progress" class="progress-active" style="width: 45%;"></div>
+                </div>
+                
+                <div class="absolute top-1/2 -translate-y-1/2 w-full flex justify-between px-0">
+                    <div class="flex flex-col items-center">
+                        <div class="step-node active w-8 h-8 rounded-full border-4 border-white shadow-sm flex items-center justify-center text-[10px] z-10 transition-colors">
+                            <i data-lucide="file-text" class="w-3 h-3"></i>
+                        </div>
+                        <span class="absolute -bottom-8 text-[10px] font-bold text-stone-400 uppercase whitespace-nowrap">Confirmed</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="step-node active w-8 h-8 rounded-full border-4 border-white shadow-sm flex items-center justify-center text-[10px] z-10 transition-colors">
+                            <i data-lucide="flame" class="w-3 h-3"></i>
+                        </div>
+                        <span class="absolute -bottom-8 text-[10px] font-bold text-stone-900 uppercase whitespace-nowrap">In Oven</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="step-node w-8 h-8 rounded-full bg-stone-100 border-4 border-white shadow-sm flex items-center justify-center text-[10px] text-stone-400 z-10 transition-colors">
+                            <i data-lucide="sparkles" class="w-3 h-3"></i>
+                        </div>
+                        <span class="absolute -bottom-8 text-[10px] font-bold text-stone-400 uppercase whitespace-nowrap">Glazing</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="step-node w-8 h-8 rounded-full bg-stone-100 border-4 border-white shadow-sm flex items-center justify-center text-[10px] text-stone-400 z-10 transition-colors">
+                            <i data-lucide="bike" class="w-3 h-3"></i>
+                        </div>
+                        <span class="absolute -bottom-8 text-[10px] font-bold text-stone-400 uppercase whitespace-nowrap">On Way</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-stone-50 rounded-3xl p-6 flex items-center gap-4">
+                <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm">
+                    <i data-lucide="map-pin" class="w-6 h-6 text-amber-700"></i>
+                </div>
+                <div class="flex-grow">
+                    <p class="text-xs text-stone-400 font-bold uppercase tracking-widest">Delivering to</p>
+                    <p class="text-sm font-bold text-stone-900">123 Baker Street, London, NW1</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-4 w-full max-w-md">
+            <button class="flex-1 bg-stone-900 text-white py-4 rounded-2xl font-bold hover:bg-stone-800 transition shadow-lg">Track on Map</button>
+            <button class="flex-1 bg-white border border-stone-200 text-stone-600 py-4 rounded-2xl font-bold hover:bg-stone-50 transition">Back to Home</button>
+        </div>
+
+        <p class="mt-12 text-stone-400 text-xs flex items-center gap-2">
+            <i data-lucide="help-circle" class="w-4 h-4"></i> Need help? <a href="#" class="text-amber-700 font-bold underline">Chat with us</a>
+        </p>
+
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        // Celebration Animation
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+            
+            tl.from("#success-container", {
+                scale: 0,
+                duration: 1,
+                ease: "elastic.out(1, 0.5)"
+            })
+            .from("h1", { opacity: 0, y: 20, duration: 0.5 }, "-=0.5")
+            .from(".w-full.max-w-2xl", { opacity: 0, y: 30, duration: 0.8 }, "-=0.3");
+
+            createConfetti();
+        });
+
+        function createConfetti() {
+            for(let i = 0; i < 40; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.backgroundColor = ['#78350f', '#f59e0b', '#10b981', '#ffffff'][Math.floor(Math.random() * 4)];
+                confetti.style.left = '50%';
+                confetti.style.top = '40%';
+                document.body.appendChild(confetti);
+
+                gsap.to(confetti, {
+                    x: (Math.random() - 0.5) * 600,
+                    y: (Math.random() - 0.5) * 600,
+                    rotation: Math.random() * 720,
+                    opacity: 0,
+                    duration: 2 + Math.random(),
+                    ease: "power2.out",
+                    onComplete: () => confetti.remove()
+                });
+            }
+        }
+    </script>
+</body>
+</html>

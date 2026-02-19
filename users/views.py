@@ -40,7 +40,7 @@ def register_client(request):
             return redirect('auth')
 
         if email is not None and password is not None and first_name is not None and last_name is not None and phone is not None:
-            user = User.objects.create_user(email=email, password=password, first_name=first_name, last_name=last_name)
+            user = User.objects.create_user(email=email, password=password, first_name=first_name, last_name=last_name, role='client')
             ClientProfile.objects.create(user=user, phone=phone)
             return redirect('auth')
         else:
@@ -65,3 +65,15 @@ def login_client(request):
         else:
             messages.error(request, 'Invalid Credentials')
             return redirect('auth')
+
+def logout_user(request):
+    logout(request)
+    return redirect('auth')
+
+def get_client_profile(request):
+    if request.user.is_authenticated and request.user.role == 'client':
+        profile = ClientProfile.objects.get(user=request.user)
+        return render(request, 'profile.html', {'profile': profile})
+    else:
+        messages.error(request, 'Unauthorized Access')
+        return redirect('auth')

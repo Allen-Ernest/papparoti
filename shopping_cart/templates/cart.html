@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Basket | Papparoti</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #fcfaf8; }
+        .cart-item { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .btn-glow:hover { box-shadow: 0 10px 25px -5px rgba(180, 83, 9, 0.4); }
+        .summary-card { position: sticky; top: 2rem; }
+    </style>
+</head>
+<body class="text-stone-800 antialiased">
+
+    <nav class="p-6 md:px-12 flex justify-between items-center bg-white/80 backdrop-blur-md sticky top-0 z-50">
+        <a href="#" class="flex items-center gap-2 group">
+            <i data-lucide="arrow-left" class="w-5 h-5 text-amber-700 group-hover:-translate-x-1 transition"></i>
+            <span class="font-bold text-stone-600">Back to Bakery</span>
+        </a>
+        <div class="text-xl font-bold tracking-tighter text-amber-900">Pappa<span class="text-amber-600">roti</span></div>
+        <div class="w-10"></div> </nav>
+
+    <main class="max-w-7xl mx-auto px-6 py-10 md:py-16">
+        <h1 class="text-4xl font-bold mb-10 text-stone-900">Your Fresh Basket <span class="text-amber-600 text-lg font-medium">(3 items)</span></h1>
+
+        <div class="flex flex-col lg:flex-row gap-12">
+            
+            <div class="flex-grow space-y-6">
+                
+                <div class="cart-item bg-white p-6 rounded-[32px] border border-stone-100 shadow-sm flex flex-col sm:flex-row items-center gap-6 relative group">
+                    <div class="w-32 h-32 bg-stone-100 rounded-2xl overflow-hidden flex-shrink-0">
+                        <img src="https://images.unsplash.com/photo-1600431521340-491eca880813?auto=format&fit=crop&q=80&w=200" alt="Signature Bun" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-grow text-center sm:text-left">
+                        <h3 class="text-lg font-bold text-stone-900">Signature Coffee Bun</h3>
+                        <p class="text-stone-400 text-xs mb-4">Extra Crispy, Salted Butter Center</p>
+                        <div class="flex items-center justify-center sm:justify-start gap-4">
+                            <div class="flex items-center border border-stone-200 rounded-xl px-2 py-1 bg-stone-50">
+                                <button class="p-1 hover:text-amber-700"><i data-lucide="minus" class="w-4 h-4"></i></button>
+                                <span class="px-4 font-bold text-sm">2</span>
+                                <button class="p-1 hover:text-amber-700"><i data-lucide="plus" class="w-4 h-4"></i></button>
+                            </div>
+                            <span class="font-bold text-amber-900">$9.00</span>
+                        </div>
+                    </div>
+                    <button class="absolute top-6 right-6 text-stone-300 hover:text-red-500 transition">
+                        <i data-lucide="trash-2" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <div class="cart-item bg-white p-6 rounded-[32px] border border-stone-100 shadow-sm flex flex-col sm:flex-row items-center gap-6 relative">
+                    <div class="w-32 h-32 bg-stone-100 rounded-2xl overflow-hidden flex-shrink-0">
+                        <img src="https://images.unsplash.com/photo-1541167760496-162955ed8a9f?auto=format&fit=crop&q=80&w=200" alt="Karak Tea" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-grow text-center sm:text-left">
+                        <h3 class="text-lg font-bold text-stone-900">Classic Karak Tea</h3>
+                        <p class="text-stone-400 text-xs mb-4">Medium, Saffron Infused</p>
+                        <div class="flex items-center justify-center sm:justify-start gap-4">
+                            <div class="flex items-center border border-stone-200 rounded-xl px-2 py-1 bg-stone-50">
+                                <button class="p-1 hover:text-amber-700"><i data-lucide="minus" class="w-4 h-4"></i></button>
+                                <span class="px-4 font-bold text-sm">1</span>
+                                <button class="p-1 hover:text-amber-700"><i data-lucide="plus" class="w-4 h-4"></i></button>
+                            </div>
+                            <span class="font-bold text-amber-900">$4.50</span>
+                        </div>
+                    </div>
+                    <button class="absolute top-6 right-6 text-stone-300 hover:text-red-500 transition">
+                        <i data-lucide="trash-2" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <div class="mt-12 bg-amber-50 rounded-[40px] p-8 border border-amber-100/50">
+                    <h4 class="font-bold text-amber-900 mb-4 flex items-center gap-2">
+                        <i data-lucide="sparkles" class="w-5 h-5"></i> Complete your experience
+                    </h4>
+                    <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+                        <div class="min-w-[200px] bg-white p-4 rounded-3xl shadow-sm">
+                            <img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?auto=format&fit=crop&q=80&w=100" class="w-12 h-12 rounded-full mb-3 object-cover">
+                            <p class="text-sm font-bold">Nutella Dip</p>
+                            <div class="flex justify-between items-center mt-2">
+                                <span class="text-xs font-bold text-amber-700">+$1.50</span>
+                                <button class="p-1 bg-amber-700 text-white rounded-lg"><i data-lucide="plus" class="w-3 h-3"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full lg:w-[400px]">
+                <div class="summary-card bg-stone-900 text-white rounded-[40px] p-8 shadow-2xl">
+                    <h3 class="text-xl font-bold mb-8">Order Summary</h3>
+                    
+                    <div class="space-y-4 mb-8">
+                        <div class="flex justify-between text-stone-400">
+                            <span>Subtotal</span>
+                            <span class="text-white font-bold">$13.50</span>
+                        </div>
+                        <div class="flex justify-between text-stone-400">
+                            <span>Delivery Fee</span>
+                            <span class="text-green-400 font-bold uppercase text-[10px] tracking-widest bg-green-400/10 px-2 py-1 rounded">Free</span>
+                        </div>
+                        <div class="flex justify-between text-stone-400">
+                            <span>Estimated Tax</span>
+                            <span class="text-white font-bold">$1.20</span>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-stone-800 pt-6 mb-8">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <p class="text-xs text-stone-500 font-bold uppercase tracking-widest">Total Amount</p>
+                                <p class="text-3xl font-bold text-amber-500">$14.70</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[10px] text-stone-500">Earns 140 Bun Points</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <button class="w-full bg-amber-600 hover:bg-amber-500 text-white py-5 rounded-[24px] font-bold text-lg transition-all btn-glow flex items-center justify-center gap-3">
+                            Place Order <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                        </button>
+                        <p class="text-center text-[10px] text-stone-500 font-medium px-4">
+                            By placing an order, you agree to Papparoti’s Terms of Service.
+                        </p>
+                    </div>
+
+                    <div class="flex justify-center gap-4 mt-8 opacity-30 grayscale">
+                        <i data-lucide="credit-card" class="w-5 h-5"></i>
+                        <i data-lucide="wallet" class="w-5 h-5"></i>
+                        <i data-lucide="smartphone" class="w-5 h-5"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        // Staggered entry for cart items
+        gsap.from(".cart-item", {
+            opacity: 0,
+            x: -30,
+            stagger: 0.15,
+            duration: 0.8,
+            ease: "power3.out"
+        });
+
+        // Summary card float in
+        gsap.from(".summary-card", {
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            ease: "power4.out",
+            delay: 0.4
+        });
+    </script>
+</body>
+</html>
