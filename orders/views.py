@@ -3,6 +3,14 @@ from django.contrib import messages
 from django.utils import timezone
 from .models import Order, OrderItem
 
+def get_order_manager(request):
+    if request.user.is_authenticated and request.user.role == 'admin':
+        orders = Order.objects.all()
+        return render(request, 'order_manager.html', {'orders': orders})
+    else:
+        messages.error(request, 'User not authenticated or not an admin')
+        return redirect('auth', {'message': 'User not authenticated or not an admin'})
+    
 def create_order(request):
     if (request.method == "POST"):
         user = request.user
