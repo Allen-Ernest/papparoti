@@ -45,9 +45,9 @@
             </div>
 
             <div class="hidden md:flex space-x-8 font-medium text-stone-600">
-                <a href="#home" class="text-amber-700 font-bold border-b-2 border-amber-700">Home</a>
+                <a href="{% url 'home' %}" class="text-amber-700 font-bold border-b-2 border-amber-700">Home</a>
                 <a href="{% url 'menus' %}" class="hover:text-amber-700 transition">Menu</a>
-                <a href="#deals" class="hover:text-amber-700 transition">Deals</a>
+                <a href="#deals" class="hover:text-amber-700 transition">Orders</a>
                 <a href="#" class="hover:text-amber-700 transition">Locations</a>
             </div>
 
@@ -96,12 +96,12 @@
                 {% else %}
                 <div class="flex items-center space-x-3">
 
-                    <a href="{% url 'login' %}"
+                    <a href="{% url 'auth' %}"
                         class="px-4 py-2 text-sm font-medium text-amber-700 border border-amber-300 rounded-full hover:bg-amber-50 transition">
                         Login
                     </a>
 
-                    <a href="{% url 'register' %}"
+                    <a href="{% url 'auth' %}"
                         class="px-4 py-2 text-sm font-medium text-white bg-amber-600 rounded-full hover:bg-amber-700 transition shadow">
                         Sign Up
                     </a>

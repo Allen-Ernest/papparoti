@@ -2,11 +2,18 @@ from pyexpat.errors import messages
 from django.shortcuts import render, redirect
 from ..models import Menu, MenuCategory
 from django.utils import timezone
+#from ...shopping_cart.models import ShoppingCart, CartItem
 
 # Create your views here.
 def get_menus(request):
-    menus = Menu.objects.all()
-    return render(request, "menu.html", {"menus": menus})
+    categories = MenuCategory.objects.prefetch_related('menus')
+    menus = Menu.objects.select_related('category')
+    #cart = ShoppingCart.objects.filter(client=request.user).first()
+    return render(request, "menu.html", {
+        "menus": menus,
+        "categories": categories,
+        #"cart": cart
+    })
 
 def get_menu_manager(request):
     menus = Menu.objects.all()

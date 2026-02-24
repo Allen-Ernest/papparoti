@@ -23,3 +23,6 @@ urlpatterns = [
     path('', include('menu.urls')),
     path('', include('orders.urls')),
 ]
+
+#TODO: Client side food viewing
+#TODO: Adding to cart and order creation
