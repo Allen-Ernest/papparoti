@@ -60,15 +60,15 @@
             <div class="hidden md:flex space-x-8 font-medium text-stone-600">
                 <a href="{% url 'home' %}" class="hover:text-amber-700 transition">Home</a>
                 <a href="{% url 'menus' %}" class="text-amber-700 font-bold border-b-2 border-amber-700">Menu</a>
-                <a href="#deals" class="hover:text-amber-700 transition">Orders</a>
+                <a href="{% url 'orders' %}" class="hover:text-amber-700 transition">Orders</a>
                 <a href="#" class="hover:text-amber-700 transition">Locations</a>
             </div>
 
             <div class="flex items-center gap-4">
-                <button class="p-2 hover:bg-stone-100 rounded-full relative">
+                <button class="p-2 hover:bg-stone-100 rounded-full relative" onclick="window.location.href='{% url 'cart' %}'">
                     <i data-lucide="shopping-bag"></i>
-                    <span
-                        class="absolute top-0 right-0 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">2</span>
+                    <span id="cart-count"
+                        class="absolute top-0 right-0 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">0</span>
                 </button>
                 {% if user.is_authenticated %}
                 <div class="relative" id="user-menu">
@@ -176,7 +176,9 @@
                             ${{ menu.price }}
                         </span>
 
-                        <button class="bg-stone-900 text-white p-2 rounded-xl hover:bg-amber-700 transition">
+                        <button
+                            class="add-to-cart-btn bg-stone-900 text-white p-2 rounded-xl hover:bg-amber-700 transition"
+                            data-id="{{ menu.id }}" data-name="{{ menu.name }}" data-price="{{ menu.price }}">
                             <i data-lucide="plus" class="w-5 h-5"></i>
                         </button>
                     </div>
@@ -190,33 +192,6 @@
         {% endfor %}
 
     </main>
-    <!-- Quantity Modal -->
-<div id="quantity-modal"
-    class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center z-50">
-
-    <div class="bg-white w-80 rounded-3xl p-6 shadow-xl text-center">
-        <h3 class="text-lg font-bold text-stone-800 mb-4" id="modal-item-name"></h3>
-
-        <div class="flex items-center justify-center gap-4 mb-6">
-            <button id="decrease-qty"
-                class="w-10 h-10 bg-stone-100 rounded-full text-xl font-bold">-</button>
-            <span id="quantity-value" class="text-xl font-bold">1</span>
-            <button id="increase-qty"
-                class="w-10 h-10 bg-stone-100 rounded-full text-xl font-bold">+</button>
-        </div>
-
-        <div class="flex gap-3">
-            <button id="cancel-modal"
-                class="flex-1 py-2 rounded-full border border-stone-200 text-stone-600">
-                Cancel
-            </button>
-            <button id="confirm-add"
-                class="flex-1 py-2 rounded-full bg-amber-600 text-white">
-                Add
-            </button>
-        </div>
-    </div>
-</div>
 
     <footer class="bg-stone-900 text-stone-400 pt-20 pb-10 px-6">
         <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12 mb-16">
@@ -254,6 +229,31 @@
             <p>&copy; 2026 Papparoti Global. All Rights Reserved.</p>
         </div>
     </footer>
+    <!-- Quantity Modal -->
+    <div id="quantity-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center z-50">
+
+        <div class="bg-white w-80 rounded-3xl p-6 shadow-xl text-center">
+            <h3 class="text-lg font-bold text-stone-800 mb-4" id="modal-item-name"></h3>
+
+            <div class="flex items-center justify-center gap-4 mb-6">
+                <button id="decrease-qty" class="w-10 h-10 bg-stone-100 rounded-full text-xl font-bold">-</button>
+                <span id="quantity-value" class="text-xl font-bold">1</span>
+                <button id="increase-qty" class="w-10 h-10 bg-stone-100 rounded-full text-xl font-bold">+</button>
+            </div>
+
+            <div class="flex gap-3">
+                <button id="cancel-modal" class="flex-1 py-2 rounded-full border border-stone-200 text-stone-600">
+                    Cancel
+                </button>
+                <button id="confirm-add" class="flex-1 py-2 rounded-full bg-amber-600 text-white">
+                    Add
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-6 right-6 bg-stone-900 text-white px-6 py-3 rounded-2xl shadow-lg hidden z-50">
+    </div>
 
     <script>
         lucide.createIcons();
@@ -335,6 +335,124 @@
                 dropdown.classList.add('hidden');
             }
         });
+
+        // ============================
+        // CART SYSTEM
+        // ============================
+
+        let cart = JSON.parse(localStorage.getItem("cart")) || {};
+        const cartCount = document.getElementById("cart-count");
+
+        function updateCartUI() {
+            const totalItems = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            localStorage.setItem("cart", JSON.stringify(cart));
+        }
+
+        function showToast(message, success = true) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.classList.remove("hidden");
+            toast.style.backgroundColor = success ? "#1c1917" : "#b91c1c";
+
+            gsap.fromTo(toast,
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.3 }
+            );
+
+            setTimeout(() => {
+                gsap.to(toast, {
+                    opacity: 0,
+                    y: 20,
+                    duration: 0.3,
+                    onComplete: () => toast.classList.add("hidden")
+                });
+            }, 2000);
+        }
+
+        updateCartUI();
+
+        // ============================
+        // QUANTITY MODAL
+        // ============================
+
+        const modal = document.getElementById("quantity-modal");
+        const quantityValue = document.getElementById("quantity-value");
+        const itemNameDisplay = document.getElementById("modal-item-name");
+        let currentItem = null;
+        let quantity = 1;
+
+        document.querySelectorAll(".add-to-cart-btn").forEach(button => {
+
+            button.addEventListener("click", () => {
+                const id = button.dataset.id;
+
+                // If already in cart → remove
+                if (cart[id]) {
+                    delete cart[id];
+                    updateCartUI();
+                    button.innerHTML = `<i data-lucide="plus" class="w-5 h-5"></i>`;
+                    lucide.createIcons();
+                    showToast("Removed from cart", false);
+                    return;
+                }
+
+                // Otherwise open modal
+                currentItem = {
+                    id: id,
+                    name: button.dataset.name,
+                    price: parseFloat(button.dataset.price)
+                };
+
+                quantity = 1;
+                quantityValue.textContent = quantity;
+                itemNameDisplay.textContent = currentItem.name;
+
+                modal.classList.remove("hidden");
+                modal.classList.add("flex");
+            });
+
+        });
+
+        // Increase/Decrease
+        document.getElementById("increase-qty").onclick = () => {
+            quantity++;
+            quantityValue.textContent = quantity;
+        };
+
+        document.getElementById("decrease-qty").onclick = () => {
+            if (quantity > 1) quantity--;
+            quantityValue.textContent = quantity;
+        };
+
+        // Cancel
+        document.getElementById("cancel-modal").onclick = () => {
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        };
+
+        // Confirm Add
+        document.getElementById("confirm-add").onclick = () => {
+            if (!currentItem) return;
+
+            cart[currentItem.id] = {
+                name: currentItem.name,
+                price: currentItem.price,
+                quantity: quantity
+            };
+
+            updateCartUI();
+
+            // Change button icon to check
+            const btn = document.querySelector(`.add-to-cart-btn[data-id="${currentItem.id}"]`);
+            btn.innerHTML = `<i data-lucide="check" class="w-5 h-5"></i>`;
+            lucide.createIcons();
+
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+
+            showToast("Added to cart");
+        };
     </script>
 </body>
 

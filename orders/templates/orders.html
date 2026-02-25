@@ -22,27 +22,79 @@
 
     <nav class="fixed w-full z-50 glass-nav border-b border-stone-200">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-2 cursor-pointer" onclick="location.href='#'">
+            <div class="flex items-center gap-2">
                 <div class="w-10 h-10 bg-amber-700 rounded-full flex items-center justify-center text-white">
                     <i data-lucide="coffee"></i>
                 </div>
-                <span class="text-2xl font-bold tracking-tighter text-amber-900">Pappa<span class="text-amber-600">roti</span></span>
+                <span class="text-2xl font-bold tracking-tighter text-amber-900">Pappa<span
+                        class="text-amber-600">roti</span></span>
             </div>
 
             <div class="hidden md:flex space-x-8 font-medium text-stone-600">
-                <a href="#" class="hover:text-amber-700 transition">Home</a>
-                <a href="#" class="hover:text-amber-700 transition">Menu</a>
-                <a href="#" class="text-amber-700 font-bold border-b-2 border-amber-700">My Orders</a>
+                <a href="{% url 'home' %}" class="hover:text-amber-700 transition">Home</a>
+                <a href="{% url 'menus' %}" class="hover:text-amber-700 transition">Menu</a>
+                <a href="{% url 'orders' %}" class="text-amber-700 font-bold border-b-2 border-amber-700">Orders</a>
+                <a href="#" class="hover:text-amber-700 transition">Locations</a>
             </div>
 
             <div class="flex items-center gap-4">
-                <div class="flex items-center gap-3 pl-4 border-l border-stone-300">
-                    <div class="text-right hidden sm:block">
-                        <p class="text-xs text-stone-500">Gold Member</p>
-                        <p class="text-sm font-semibold">Alex Dan</p>
+                <button class="p-2 hover:bg-stone-100 rounded-full relative" onclick="window.location.href='{% url 'cart' %}'">
+                    <i data-lucide="shopping-bag"></i>
+                    <span
+                        class="absolute top-0 right-0 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">2</span>
+                </button>
+                {% if user.is_authenticated %}
+                <div class="relative" id="user-menu">
+                    <button type="button" onclick="toggleDropdown()"
+                        class="flex items-center space-x-3 focus:outline-none">
+
+                        <!-- User Info -->
+                        <div class="text-right hidden sm:block">
+                            <p class="text-xs text-stone-500">Welcome back,</p>
+                            <p class="text-sm font-semibold text-stone-700">
+                                {{ user.first_name }} {{ user.last_name }}
+                            </p>
+                        </div>
+
+                        <!-- Avatar -->
+                        <div
+                            class="w-10 h-10 rounded-full border-2 border-amber-200 bg-amber-600 text-white flex items-center justify-center font-semibold">
+                            {{ user.first_name|first }}{% if user.last_name %}{{ user.last_name|first }}{% endif %}
+                        </div>
+                    </button>
+
+                    <!-- Dropdown -->
+                    <div id="dropdown"
+                        class="hidden absolute right-0 mt-3 w-44 bg-white rounded-xl shadow-lg border border-stone-200 overflow-hidden">
+
+                        <a href="{% url 'client_profile' %}"
+                            class="block px-4 py-3 text-sm text-stone-600 hover:bg-amber-50 hover:text-amber-700 transition">
+                            Profile
+                        </a>
+
+                        <a href="{% url 'logout' %}"
+                            class="block px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition">
+                            Logout
+                        </a>
                     </div>
-                    <img src="https://ui-avatars.com/api/?name=Alex+Dan&background=D4A373&color=fff" class="w-10 h-10 rounded-full border-2 border-amber-200">
                 </div>
+
+                {% else %}
+                <div class="flex items-center space-x-3">
+
+                    <a href="{% url 'auth' %}"
+                        class="px-4 py-2 text-sm font-medium text-amber-700 border border-amber-300 rounded-full hover:bg-amber-50 transition">
+                        Login
+                    </a>
+
+                    <a href="{% url 'auth' %}"
+                        class="px-4 py-2 text-sm font-medium text-white bg-amber-600 rounded-full hover:bg-amber-700 transition shadow">
+                        Sign Up
+                    </a>
+
+                </div>
+                {% endif %}
+
             </div>
         </div>
     </nav>
@@ -199,8 +251,73 @@
         </div>
     </main>
 
-    <footer class="bg-stone-900 text-stone-400 py-10 px-6 text-center">
-        <p class="text-sm">&copy; 2026 Papparoti Global. One Bun at a Time.</p>
+    <footer class="bg-stone-900 text-stone-400 pt-20 pb-10 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12 mb-16">
+            <div class="col-span-1 md:col-span-1">
+                <div class="flex items-center gap-2 text-white mb-6">
+                    <i data-lucide="coffee"></i>
+                    <span class="text-2xl font-bold">Papparoti</span>
+                </div>
+                <p class="text-sm leading-relaxed">
+                    The international coffee bun brand that brought the unique aroma of freshly baked buns to the world
+                    since 2003.
+                </p>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-6">Quick Links</h4>
+                <ul class="space-y-4 text-sm">
+                    <li><a href="#" class="hover:text-amber-500 transition">Our Story</a></li>
+                    <li><a href="#" class="hover:text-amber-500 transition">Franchise</a></li>
+                    <li><a href="#" class="hover:text-amber-500 transition">Menu PDF</a></li>
+                    <li><a href="#" class="hover:text-amber-500 transition">Privacy Policy</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-6">Visit Us</h4>
+                <ul class="space-y-4 text-sm">
+                    <li class="flex items-start gap-3">
+                        <i data-lucide="map-pin" class="w-5 h-5 text-amber-500"></i>
+                        <span>123 Baker Street, <br>Downtown Metropolis, NY</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i data-lucide="phone" class="w-5 h-5 text-amber-500"></i>
+                        <span>+1 (555) 000-ROTl</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-6">Follow the Aroma</h4>
+                <div class="flex gap-4">
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-700 transition"><i
+                            data-lucide="instagram" class="w-5 h-5"></i></a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-700 transition"><i
+                            data-lucide="facebook" class="w-5 h-5"></i></a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-700 transition"><i
+                            data-lucide="twitter" class="w-5 h-5"></i></a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-700 transition"><i
+                            data-lucide="message-circle" class="w-5 h-5"></i></a>
+                </div>
+                <div class="mt-8">
+                    <p class="text-xs mb-3">Subscribe for sweet updates</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email"
+                            class="bg-stone-800 border-none rounded-l-lg px-4 py-2 w-full focus:ring-1 focus:ring-amber-500">
+                        <button class="bg-amber-700 text-white px-4 py-2 rounded-r-lg"><i data-lucide="send"
+                                class="w-4 h-4"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto pt-8 border-t border-stone-800 text-center text-xs">
+            <p>&copy; 2026 Papparoti Global. All Rights Reserved. Designed for Foodies.</p>
+        </div>
     </footer>
 
     <script>

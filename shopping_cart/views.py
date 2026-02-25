@@ -1,4 +1,14 @@
-from django.shortcuts import render
+from pyexpat.errors import messages
+
+from django.shortcuts import redirect, render
+from django.contrib import messages
+
+def get_cart_page(request):
+    if request.user.is_authenticated:
+        return render(request, "cart.html")
+    else:
+        messages.error(request, 'Please log in to view your shopping cart.')
+        return redirect("auth")
 
 def create_shopping_cart(request):
     # This view will be used to create a shopping cart for a client

@@ -3,6 +3,13 @@ from django.contrib import messages
 from django.utils import timezone
 from .models import Order, OrderItem
 
+def get_orders_page(request):
+    if request.user.is_authenticated and request.user.role == 'client':
+        return render(request, "orders.html")
+    else:
+        messages.error(request, 'Please log in to view your orders.')
+        return redirect("auth")
+
 def get_order_manager(request):
     if request.user.is_authenticated and request.user.role == 'admin':
         orders = Order.objects.all()
