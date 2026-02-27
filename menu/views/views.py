@@ -1,19 +1,37 @@
 from pyexpat.errors import messages
 from django.shortcuts import render, redirect
 from ..models import Menu, MenuCategory
+from shopping_cart.models import Cart, CartItem
 from django.utils import timezone
-#from ...shopping_cart.models import ShoppingCart, CartItem
 
-# Create your views here.
 def get_menus(request):
     categories = MenuCategory.objects.prefetch_related('menus')
     menus = Menu.objects.select_related('category')
-    #cart = ShoppingCart.objects.filter(client=request.user).first()
-    return render(request, "menu.html", {
+    cart_items_count = 0
+    
+    if request.user.is_authenticated and request.user.role == 'client':
+        client_profile = request.user.client_profile
+        cart = Cart.objects.filter(user=client_profile, status="active").first()
+        if cart:
+            cart_items_count = CartItem.objects.filter(cart=cart).count()
+            return render(request, "menu.html", {
+            "menus": menus,
+            "categories": categories,
+            "cart_items_count": cart_items_count
+            })
+        else:
+            return render(request, "menu.html", {
+            "menus": menus,
+            "categories": categories,
+            "cart_items_count": cart_items_count
+            })
+    else:
+        return render(request, "menu.html", {
         "menus": menus,
         "categories": categories,
-        #"cart": cart
-    })
+        "cart_items_count": cart_items_count
+        })
+        
 
 def get_menu_manager(request):
     menus = Menu.objects.all()
@@ -84,3 +102,6 @@ def update_menu(request):
     else:
         context = {"Error": "Bad Request"}
         return redirect("admin_dashboard")
+    
+def get_500_error(request):
+    return render(request, "500.html")

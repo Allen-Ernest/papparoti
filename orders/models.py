@@ -20,3 +20,6 @@ class OrderItem(models.Model):
 
     def get_total_price(self):
         return self.quantity * self.purchase_price
+    
+    #TODO: add a method to calculate the total price of the order based on the order items
+    #TODO: implement shopping cart and placing order

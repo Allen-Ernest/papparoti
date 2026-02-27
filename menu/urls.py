@@ -9,4 +9,5 @@ urlpatterns = [
     path('update_menu/', views.update_menu, name='update_menu'),
     path('menu_manager/', views.get_menu_manager, name='menu_manager'),
     path('add_menu_category/', category_views.add_menu_cartegory, name='add_menu_category'),
+    path('500/', views.get_500_error, name='error_500'),
 ]

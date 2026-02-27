@@ -65,10 +65,14 @@
             </div>
 
             <div class="flex items-center gap-4">
-                <button class="p-2 hover:bg-stone-100 rounded-full relative" onclick="window.location.href='{% url 'cart' %}'">
+                <button class="p-2 hover:bg-stone-100 rounded-full relative"
+                    onclick="window.location.href='{% url 'cart' %}'">
                     <i data-lucide="shopping-bag"></i>
+                    {% if cart_items_count > 0 %}
                     <span id="cart-count"
-                        class="absolute top-0 right-0 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">0</span>
+                        class="absolute top-0 right-0 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">{{
+                        cart_items_count }}</span>
+                    {% endif %}
                 </button>
                 {% if user.is_authenticated %}
                 <div class="relative" id="user-menu">
@@ -178,7 +182,8 @@
 
                         <button
                             class="add-to-cart-btn bg-stone-900 text-white p-2 rounded-xl hover:bg-amber-700 transition"
-                            data-id="{{ menu.id }}" data-name="{{ menu.name }}" data-price="{{ menu.price }}">
+                            data-id="{{ menu.id }}" data-name="{{ menu.name }}" data-price="{{ menu.price }}"
+                            data-image="{{ menu.image_url }}">
                             <i data-lucide="plus" class="w-5 h-5"></i>
                         </button>
                     </div>
@@ -230,29 +235,62 @@
         </div>
     </footer>
     <!-- Quantity Modal -->
-    <div id="quantity-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center z-50">
-
-        <div class="bg-white w-80 rounded-3xl p-6 shadow-xl text-center">
-            <h3 class="text-lg font-bold text-stone-800 mb-4" id="modal-item-name"></h3>
-
-            <div class="flex items-center justify-center gap-4 mb-6">
-                <button id="decrease-qty" class="w-10 h-10 bg-stone-100 rounded-full text-xl font-bold">-</button>
-                <span id="quantity-value" class="text-xl font-bold">1</span>
-                <button id="increase-qty" class="w-10 h-10 bg-stone-100 rounded-full text-xl font-bold">+</button>
+    <div id="quantity-modal"
+        class="fixed inset-0 bg-stone-900/60 backdrop-blur-md hidden items-center justify-center z-[100] p-4">
+        <div id="modal-content"
+            class="bg-white w-full max-w-2xl rounded-[40px] overflow-hidden shadow-2xl flex flex-col md:flex-row border border-stone-100">
+            <div class="w-full md:w-1/2 h-64 md:h-auto bg-stone-100 relative">
+                <img id="modal-item-image" src="" alt="" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-stone-900/40 to-transparent md:hidden"></div>
             </div>
 
-            <div class="flex gap-3">
-                <button id="cancel-modal" class="flex-1 py-2 rounded-full border border-stone-200 text-stone-600">
-                    Cancel
-                </button>
-                <button id="confirm-add" class="flex-1 py-2 rounded-full bg-amber-600 text-white">
-                    Add
-                </button>
+            <div class="w-full md:w-1/2 p-8 md:p-10 flex flex-col">
+                <div class="mb-auto">
+                    <span id="modal-item-category"
+                        class="text-[10px] font-bold tracking-[0.2em] text-amber-600 uppercase mb-2 block">Signature
+                        Bun</span>
+                    <h3 class="text-3xl font-bold text-stone-900 mb-2" id="modal-item-name"></h3>
+                    <p id="modal-item-price-display" class="text-xl font-semibold text-stone-400 mb-6"></p>
+
+                    <label class="text-[10px] font-bold text-stone-400 uppercase tracking-widest block mb-4">Select
+                        Quantity</label>
+                    <div class="flex items-center gap-6 mb-8">
+                        <button id="decrease-qty"
+                            class="w-12 h-12 rounded-2xl border-2 border-stone-100 flex items-center justify-center hover:bg-stone-50 hover:border-amber-200 transition-all text-xl font-bold text-stone-600">-</button>
+                        <span id="quantity-value" class="text-2xl font-bold text-stone-900 w-8 text-center">1</span>
+                        <button id="increase-qty"
+                            class="w-12 h-12 rounded-2xl border-2 border-stone-100 flex items-center justify-center hover:bg-stone-50 hover:border-amber-200 transition-all text-xl font-bold text-stone-600">+</button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-3">
+                    <button id="confirm-add"
+                        class="w-full py-4 rounded-2xl bg-amber-700 text-white font-bold shadow-lg shadow-amber-900/20 hover:bg-amber-800 transition-all flex justify-between px-6 items-center">
+                        <span>Add to Bag</span>
+                        <span id="modal-total-price" class="bg-amber-600 px-3 py-1 rounded-lg text-sm">$0.00</span>
+                    </button>
+                    <button id="cancel-modal"
+                        class="w-full py-3 rounded-2xl text-stone-400 font-semibold hover:text-stone-600 transition-colors text-sm">
+                        Maybe later
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="toast" class="fixed bottom-6 right-6 bg-stone-900 text-white px-6 py-3 rounded-2xl shadow-lg hidden z-50">
+    <div id="toast"
+        class="fixed bottom-8 left-1/2 -translate-x-1/2 md:left-auto md:right-8 md:translate-x-0 z-[110] pointer-events-none">
+        <div id="toast-content"
+            class="bg-stone-900 text-white p-2 pr-6 rounded-2xl shadow-2xl flex items-center gap-4 min-w-[280px] transform translate-y-20 opacity-0 transition-all duration-500">
+            <div id="toast-icon-bg" class="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg">
+                <i id="toast-icon" data-lucide="shopping-bag" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-grow">
+                <p id="toast-title" class="text-xs font-bold uppercase tracking-widest text-stone-400 mb-0.5">Success
+                </p>
+                <p id="toast-message" class="text-sm font-medium"></p>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -343,116 +381,156 @@
         let cart = JSON.parse(localStorage.getItem("cart")) || {};
         const cartCount = document.getElementById("cart-count");
 
-        function updateCartUI() {
-            const totalItems = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
-            cartCount.textContent = totalItems;
-            localStorage.setItem("cart", JSON.stringify(cart));
+        function updateCartUI(value) {
+            cartCount.textContent = value;
         }
-
-        function showToast(message, success = true) {
-            const toast = document.getElementById("toast");
-            toast.textContent = message;
-            toast.classList.remove("hidden");
-            toast.style.backgroundColor = success ? "#1c1917" : "#b91c1c";
-
-            gsap.fromTo(toast,
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.3 }
-            );
-
-            setTimeout(() => {
-                gsap.to(toast, {
-                    opacity: 0,
-                    y: 20,
-                    duration: 0.3,
-                    onComplete: () => toast.classList.add("hidden")
-                });
-            }, 2000);
-        }
-
-        updateCartUI();
 
         // ============================
         // QUANTITY MODAL
         // ============================
 
         const modal = document.getElementById("quantity-modal");
+        const modalContent = document.getElementById("modal-content");
         const quantityValue = document.getElementById("quantity-value");
         const itemNameDisplay = document.getElementById("modal-item-name");
+        const itemImageDisplay = document.getElementById("modal-item-image");
+        const itemCategoryDisplay = document.getElementById("modal-item-category");
+        const itemPriceDisplay = document.getElementById("modal-item-price-display");
+        const modalTotalDisplay = document.getElementById("modal-total-price");
+
         let currentItem = null;
         let quantity = 1;
 
-        document.querySelectorAll(".add-to-cart-btn").forEach(button => {
 
+        // Open Modal Logic
+        document.querySelectorAll(".add-to-cart-btn").forEach(button => {
             button.addEventListener("click", () => {
                 const id = button.dataset.id;
 
-                // If already in cart → remove
+                // Removal Logic
                 if (cart[id]) {
                     delete cart[id];
                     updateCartUI();
                     button.innerHTML = `<i data-lucide="plus" class="w-5 h-5"></i>`;
                     lucide.createIcons();
-                    showToast("Removed from cart", false);
+                    showToast("Removed from bag", false);
                     return;
                 }
 
-                // Otherwise open modal
+                // Open Modal Setup
                 currentItem = {
                     id: id,
                     name: button.dataset.name,
-                    price: parseFloat(button.dataset.price)
+                    price: parseFloat(button.dataset.price),
+                    image: button.dataset.image,
+                    category: button.closest('.menu-item').dataset.category
                 };
 
                 quantity = 1;
-                quantityValue.textContent = quantity;
-                itemNameDisplay.textContent = currentItem.name;
+                updateModalView();
 
                 modal.classList.remove("hidden");
                 modal.classList.add("flex");
-            });
 
+                // GSAP Entry
+                gsap.fromTo(modalContent,
+                    { y: 50, opacity: 0, scale: 0.9 },
+                    { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.4)" }
+                );
+            });
         });
 
-        // Increase/Decrease
-        document.getElementById("increase-qty").onclick = () => {
-            quantity++;
+        function updateModalView() {
             quantityValue.textContent = quantity;
-        };
+            itemNameDisplay.textContent = currentItem.name;
+            itemImageDisplay.src = currentItem.image;
+            itemCategoryDisplay.textContent = currentItem.category;
+            itemPriceDisplay.textContent = `$${currentItem.price.toFixed(2)} each`;
+            modalTotalDisplay.textContent = `$${(currentItem.price * quantity).toFixed(2)}`;
+        }
 
-        document.getElementById("decrease-qty").onclick = () => {
-            if (quantity > 1) quantity--;
-            quantityValue.textContent = quantity;
-        };
+        document.getElementById("increase-qty").onclick = () => { quantity++; updateModalView(); };
+        document.getElementById("decrease-qty").onclick = () => { if (quantity > 1) { quantity--; updateModalView(); } };
 
-        // Cancel
-        document.getElementById("cancel-modal").onclick = () => {
-            modal.classList.add("hidden");
-            modal.classList.remove("flex");
-        };
+        document.getElementById("cancel-modal").onclick = closeModal;
 
-        // Confirm Add
+        function closeModal() {
+            gsap.to(modalContent, {
+                y: 30, opacity: 0, scale: 0.95, duration: 0.3,
+                onComplete: () => {
+                    modal.classList.add("hidden");
+                    modal.classList.remove("flex");
+                }
+            });
+        }
+
         document.getElementById("confirm-add").onclick = () => {
             if (!currentItem) return;
 
-            cart[currentItem.id] = {
-                name: currentItem.name,
-                price: currentItem.price,
-                quantity: quantity
-            };
+            fetch("/add-to-cart/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: JSON.stringify({
+                    menu_id: currentItem.id,
+                    quantity: quantity
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
 
-            updateCartUI();
+                        const btn = document.querySelector(
+                            `.add-to-cart-btn[data-id="${currentItem.id}"]`
+                        );
 
-            // Change button icon to check
-            const btn = document.querySelector(`.add-to-cart-btn[data-id="${currentItem.id}"]`);
-            btn.innerHTML = `<i data-lucide="check" class="w-5 h-5"></i>`;
+                        btn.innerHTML = `<i data-lucide="check" class="w-5 h-5"></i>`;
+                        lucide.createIcons();
+
+                        closeModal();
+                        showToast(`${currentItem.name} added!`, true);
+
+                        const cartCount = document.getElementById("cart-count");
+                        cartCount.textContent = data.cart_items_count;
+
+                    } else {
+                        closeModal();
+                        console.log(error)
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        };
+
+        function showToast(message, isSuccess) {
+            const toast = document.getElementById("toast-content");
+            const title = document.getElementById("toast-title");
+            const msg = document.getElementById("toast-message");
+            const iconBg = document.getElementById("toast-icon-bg");
+            const icon = document.getElementById("toast-icon");
+
+            msg.textContent = message;
+            title.textContent = isSuccess ? "Success" : "Removed";
+
+            // Styling based on state
+            if (isSuccess) {
+                iconBg.className = "w-12 h-12 rounded-xl flex items-center justify-center shadow-lg bg-amber-600";
+                icon.setAttribute("data-lucide", "shopping-bag");
+            } else {
+                iconBg.className = "w-12 h-12 rounded-xl flex items-center justify-center shadow-lg bg-stone-700";
+                icon.setAttribute("data-lucide", "trash-2");
+            }
+
             lucide.createIcons();
 
-            modal.classList.add("hidden");
-            modal.classList.remove("flex");
-
-            showToast("Added to cart");
-        };
+            // GSAP Toast Animation
+            const tl = gsap.timeline();
+            tl.to(toast, { y: 0, opacity: 1, duration: 0.5, ease: "power4.out" })
+                .to(toast, { y: 20, opacity: 0, duration: 0.4, ease: "power4.in" }, "+=2.5");
+        }
     </script>
 </body>
 
