@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empty Basket | Papparoti</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fcfaf8;
+        }
+
+        .floating-bun {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 10px 25px -5px rgba(180, 83, 9, 0.4);
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="text-stone-800 antialiased min-h-screen flex flex-col">
+
+    <nav class="p-6 md:px-12 flex justify-between items-center bg-white/50 backdrop-blur-md sticky top-0 z-50">
+        <div class="text-xl font-bold tracking-tighter text-amber-900">Pappa<span class="text-amber-600">roti</span>
+        </div>
+        <a href="{% url 'menus' %}" class="text-sm font-bold text-stone-600 hover:text-amber-700 transition">View
+            Menu</a>
+    </nav>
+
+    <main class="flex-grow flex flex-col items-center justify-center px-6 py-12 text-center">
+
+        <div class="relative mb-10">
+            <div
+                class="floating-bun w-40 h-40 bg-amber-100 rounded-[48px] flex items-center justify-center relative z-10">
+                <i data-lucide="shopping-basket" class="w-20 h-20 text-amber-700 stroke-[1.5]"></i>
+            </div>
+            <div class="absolute -top-4 -right-2 opacity-20">
+                <i data-lucide="wind" class="w-12 h-12 text-amber-900"></i>
+            </div>
+            <div class="absolute -bottom-6 -left-6 w-24 h-24 bg-amber-50 rounded-full blur-3xl -z-10"></div>
+        </div>
+
+        <h1 class="text-4xl font-bold text-stone-900 mb-4">Your basket is feeling lonely.</h1>
+        <p class="text-stone-500 max-w-sm mx-auto mb-10 leading-relaxed">
+            The oven is warm and the coffee is brewing, but your basket is still empty. Let's fix that!
+        </p>
+
+        <a href="{% url 'menus' %}"
+            class="bg-stone-900 text-white px-10 py-5 rounded-[24px] font-bold text-lg hover:bg-amber-800 transition-all btn-glow flex items-center gap-3">
+            Start Filling It Up <i data-lucide="arrow-right" class="w-5 h-5"></i>
+        </a>
+
+        <div class="mt-24 w-full max-w-2xl">
+            <h3 class="text-xs font-bold text-stone-400 uppercase tracking-[0.2em] mb-8">Fan Favorites</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                <div
+                    class="bg-white p-4 rounded-[32px] border border-stone-100 shadow-sm flex items-center gap-4 hover:border-amber-200 transition">
+                    <img src="https://images.unsplash.com/photo-1600431521340-491eca880813?auto=format&fit=crop&q=80&w=100"
+                        class="w-16 h-16 rounded-2xl object-cover">
+                    <div class="text-left">
+                        <p class="font-bold text-stone-900">Signature Bun</p>
+                        <p class="text-xs text-amber-700 font-bold">$4.50</p>
+                    </div>
+                    <button
+                        class="ml-auto w-10 h-10 bg-stone-50 rounded-full flex items-center justify-center hover:bg-amber-700 hover:text-white transition">
+                        <i data-lucide="plus" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <div
+                    class="bg-white p-4 rounded-[32px] border border-stone-100 shadow-sm flex items-center gap-4 hover:border-amber-200 transition">
+                    <img src="https://images.unsplash.com/photo-1541167760496-162955ed8a9f?auto=format&fit=crop&q=80&w=100"
+                        class="w-16 h-16 rounded-2xl object-cover">
+                    <div class="text-left">
+                        <p class="font-bold text-stone-900">Karak Tea</p>
+                        <p class="text-xs text-amber-700 font-bold">$3.50</p>
+                    </div>
+                    <button
+                        class="ml-auto w-10 h-10 bg-stone-50 rounded-full flex items-center justify-center hover:bg-amber-700 hover:text-white transition">
+                        <i data-lucide="plus" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-stone-900 text-stone-400 pt-20 pb-10 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12 mb-16">
+            <div class="col-span-1 md:col-span-1">
+                <div class="flex items-center gap-2 text-white mb-6">
+                    <i data-lucide="coffee"></i>
+                    <span class="text-2xl font-bold">Papparoti</span>
+                </div>
+                <p class="text-sm leading-relaxed">
+                    The international coffee bun brand that brought the unique aroma of freshly baked buns to the world
+                    since 2003.
+                </p>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-6">Quick Links</h4>
+                <ul class="space-y-4 text-sm">
+                    <li><a href="#" class="hover:text-amber-500 transition">Our Story</a></li>
+                    <li><a href="#" class="hover:text-amber-500 transition">Franchise</a></li>
+                    <li><a href="#" class="hover:text-amber-500 transition">Menu PDF</a></li>
+                    <li><a href="#" class="hover:text-amber-500 transition">Privacy Policy</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-6">Visit Us</h4>
+                <ul class="space-y-4 text-sm">
+                    <li class="flex items-start gap-3">
+                        <i data-lucide="map-pin" class="w-5 h-5 text-amber-500"></i>
+                        <span>123 Baker Street, <br>Downtown Metropolis, NY</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i data-lucide="phone" class="w-5 h-5 text-amber-500"></i>
+                        <span>+1 (555) 000-ROTl</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-6">Follow the Aroma</h4>
+                <div class="flex gap-4">
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-700 transition"><i
+                            data-lucide="instagram" class="w-5 h-5"></i></a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-700 transition"><i
+                            data-lucide="facebook" class="w-5 h-5"></i></a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-700 transition"><i
+                            data-lucide="twitter" class="w-5 h-5"></i></a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-700 transition"><i
+                            data-lucide="message-circle" class="w-5 h-5"></i></a>
+                </div>
+                <div class="mt-8">
+                    <p class="text-xs mb-3">Subscribe for sweet updates</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email"
+                            class="bg-stone-800 border-none rounded-l-lg px-4 py-2 w-full focus:ring-1 focus:ring-amber-500">
+                        <button class="bg-amber-700 text-white px-4 py-2 rounded-r-lg"><i data-lucide="send"
+                                class="w-4 h-4"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto pt-8 border-t border-stone-800 text-center text-xs">
+            <p>&copy; 2026 Papparoti Global. All Rights Reserved. Designed for Foodies.</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Smooth Entrance
+        gsap.from("main > *", {
+            opacity: 0,
+            y: 30,
+            stagger: 0.15,
+            duration: 1,
+            ease: "power4.out"
+        });
+    </script>
+</body>
+
+</html>

@@ -1,8 +1,72 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.db.models import Sum
+from django.utils import timezone
 from ..models import Order, OrderItem
 
-def view_client_views(request, client_id):
+def get_order_manager(request):
+    if not (request.user.is_authenticated and request.user.role == 'admin'):
+        messages.error(request, "Unauthorized")
+        return redirect('auth_admin')
+
+    filter_status = request.GET.get('status')
+
+    orders = Order.objects.all().order_by('-created_at')
+
+    if filter_status and filter_status != "all":
+        orders = orders.filter(status=filter_status)
+
+    today = timezone.now().date()
+
+    total_orders_today = Order.objects.filter(created_at__date=today).count()
+    pending_count = Order.objects.filter(status='pending').count()
+    processing_count = Order.objects.filter(status='processing').count()
+    completed_count = Order.objects.filter(status='completed').count()
+
+    revenue = Order.objects.aggregate(
+        total=Sum('total_price')
+    )['total'] or 0
+
+    context = {
+        'orders': orders,
+        'pending_count': pending_count,
+        'processing_count': processing_count,
+        'completed_count': completed_count,
+        'revenue': revenue,
+        'total_orders_today': total_orders_today,
+        'current_filter': filter_status or "all"
+    }
+    
+    return render(request, 'order_manager.html', context)
+    
+def complete_order(request, order_id):
+    if not (request.user.is_authenticated and request.user.role == 'admin'):
+        messages.error(request, "Unauthorized")
+        return redirect('auth_admin')
+
+    order = get_object_or_404(Order, id=order_id)
+
+    if request.method == "POST":
+        order.status = "completed"
+        order.save()
+        messages.success(request, f"Order {order.order_number} marked as completed.")
+        return redirect('order_manager')
+
+    return redirect('order_manager')
+
+def update_order_status(request, order_id, new_status):
+    if not (request.user.is_authenticated and request.user.role == 'admin'):
+        return redirect('auth_admin')
+
+    order = get_object_or_404(Order, id=order_id)
+
+    if request.method == "POST":
+        order.status = new_status
+        order.save()
+
+    return redirect('order_manager')
+
+def view_client_orders(request, client_id):
     # This view will be used to view all orders of a specific client
     if request.user.is_authenticated and request.user.role == 'admin':
         orders = Order.objects.filter(client_id=client_id)

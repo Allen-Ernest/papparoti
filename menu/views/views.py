@@ -14,10 +14,12 @@ def get_menus(request):
         cart = Cart.objects.filter(user=client_profile, status="active").first()
         if cart:
             cart_items_count = CartItem.objects.filter(cart=cart).count()
+            cart_items_ids = CartItem.objects.filter(cart=cart).values_list('menu_id', flat=True)
             return render(request, "menu.html", {
             "menus": menus,
             "categories": categories,
-            "cart_items_count": cart_items_count
+            "cart_items_count": cart_items_count,
+            "cart_items_ids": cart_items_ids
             })
         else:
             return render(request, "menu.html", {

@@ -105,51 +105,25 @@
             <div class="w-full md:w-1/3 space-y-6">
                 <h1 class="text-3xl font-bold text-stone-900 mb-8">Order History</h1>
 
-                <div class="order-card active p-5 rounded-[24px] bg-white border-2 border-amber-700 shadow-sm cursor-pointer transition-all hover:shadow-md" id="active-trigger">
+                {% if orders %}
+                {% for order in orders %}
+                <div class="order-card active p-5 rounded-[24px] bg-white border-2 border-amber-700 shadow-sm cursor-pointer transition-all hover:shadow-md {% if forloop.first and order.status == 'pending' %}active{% endif %}">
                     <div class="flex justify-between items-start mb-3">
                         <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">In Progress</span>
-                        <span class="text-xs text-stone-400">#PR-8821</span>
+                        <span class="text-xs text-stone-400">#{{ order.number }}</span>
                     </div>
-                    <h3 class="font-bold text-stone-900">Signature Bun & Karak</h3>
-                    <p class="text-sm text-stone-500 mb-4">Ordered: Today, 10:45 AM</p>
+                    <h3 class="font-bold text-stone-900">{{ order.items.first.menu.name }}</h3>
+                    <p class="text-sm text-stone-500 mb-4">Ordered: {{ order.created_at|date:"M d, Y H:i" }}</p>
                     <div class="flex justify-between items-center">
-                        <span class="font-bold text-amber-800">$18.50</span>
+                        <span class="font-bold text-amber-800">{{ order.total_price }}</span>
                         <div class="flex -space-x-2">
-                            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=100" class="w-8 h-8 rounded-full border-2 border-white object-cover">
-                            <img src="https://images.unsplash.com/photo-1594631252845-29fc458695d7?q=80&w=100" class="w-8 h-8 rounded-full border-2 border-white object-cover">
+                            <img src="{{ order.items.first.menu.image_url }}" class="w-8 h-8 rounded-full border-2 border-white object-cover">
+                            <img src="{{ order.items.last.menu.image_url }}" class="w-8 h-8 rounded-full border-2 border-white object-cover">
                         </div>
                     </div>
                 </div>
-
-                <div class="order-card p-5 rounded-[24px] bg-white border border-stone-200 shadow-sm cursor-pointer transition-all hover:bg-stone-50">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="bg-stone-100 text-stone-500 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">Completed</span>
-                        <span class="text-xs text-stone-400">#PR-7710</span>
-                    </div>
-                    <h3 class="font-bold text-stone-900">Lotus Biscoff Party Pack</h3>
-                    <p class="text-sm text-stone-500 mb-4">Ordered: Feb 12, 2026</p>
-                    <div class="flex justify-between items-center">
-                        <span class="font-bold text-stone-600">$42.00</span>
-                        <button class="text-xs font-bold text-amber-700 flex items-center gap-1 hover:underline">
-                            <i data-lucide="rotate-ccw" class="w-3 h-3"></i> Reorder
-                        </button>
-                    </div>
-                </div>
-
-                <div class="order-card p-5 rounded-[24px] bg-white border border-stone-200 shadow-sm cursor-pointer transition-all hover:bg-stone-50">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="bg-stone-100 text-stone-500 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">Completed</span>
-                        <span class="text-xs text-stone-400">#PR-7690</span>
-                    </div>
-                    <h3 class="font-bold text-stone-900">Breakfast Combo</h3>
-                    <p class="text-sm text-stone-500 mb-4">Ordered: Feb 08, 2026</p>
-                    <div class="flex justify-between items-center">
-                        <span class="font-bold text-stone-600">$12.25</span>
-                        <button class="text-xs font-bold text-amber-700 flex items-center gap-1 hover:underline">
-                            <i data-lucide="rotate-ccw" class="w-3 h-3"></i> Reorder
-                        </button>
-                    </div>
-                </div>
+                {% endfor %}
+                {% endif %}
             </div>
 
             <div class="w-full md:w-2/3" id="details-panel">
@@ -339,6 +313,44 @@
             delay: 0.3,
             ease: "power2.out"
         });
+
+        document.querySelectorAll('.order-card').forEach(card => {
+    const remaining = parseInt(card.dataset.remaining);
+
+    if (!remaining || remaining <= 0) return;
+
+    let seconds = remaining;
+
+    const interval = setInterval(() => {
+        seconds--;
+
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+
+        const display = card.querySelector('.arrival-time');
+        if (display) {
+            display.textContent = `Arriving in ${mins}m ${secs}s`;
+        }
+
+        // Change phase dynamically
+        if (seconds > 1800) {
+            updatePhase('baking');
+        } else if (seconds > 0) {
+            updatePhase('delivery');
+        }
+
+        if (seconds <= 0) {
+            clearInterval(interval);
+            location.reload(); // refresh to show completed
+        }
+
+    }, 1000);
+
+    function updatePhase(stage) {
+        // Add/remove classes to your step UI
+        // Keep your beautiful UI intact
+    }
+});
     </script>
 </body>
 </html>

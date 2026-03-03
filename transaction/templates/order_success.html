@@ -30,14 +30,14 @@
 
         <div class="text-center max-w-md mb-12">
             <h1 class="text-4xl font-bold text-stone-900 mb-2">Order Confirmed!</h1>
-            <p class="text-stone-500">Order <span class="font-mono font-bold text-amber-700">#PR-9021</span> is being prepared with love.</p>
+            <p class="text-stone-500">Order <span class="font-mono font-bold text-amber-700">#{{ order.order_number }}</span> is being prepared with love.</p>
         </div>
 
         <div class="w-full max-w-2xl bg-white rounded-[40px] p-8 md:p-12 border border-stone-100 shadow-sm mb-10">
             <div class="flex justify-between items-center mb-10">
                 <div class="text-left">
                     <p class="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Est. Delivery</p>
-                    <p class="text-xl font-bold text-stone-900">12:45 PM</p>
+                    <p class="text-xl font-bold text-stone-900">{{ delivery_time }}</p>
                 </div>
                 <div class="text-right">
                     <p class="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Status</p>
@@ -86,14 +86,14 @@
                 </div>
                 <div class="flex-grow">
                     <p class="text-xs text-stone-400 font-bold uppercase tracking-widest">Delivering to</p>
-                    <p class="text-sm font-bold text-stone-900">123 Baker Street, London, NW1</p>
+                    <p class="text-sm font-bold text-stone-900">{{ order.street_address }}, {{ order.city}}, {{order.postal_code}}</p>
                 </div>
             </div>
         </div>
 
         <div class="flex flex-col md:flex-row gap-4 w-full max-w-md">
             <button class="flex-1 bg-stone-900 text-white py-4 rounded-2xl font-bold hover:bg-stone-800 transition shadow-lg">Track on Map</button>
-            <button class="flex-1 bg-white border border-stone-200 text-stone-600 py-4 rounded-2xl font-bold hover:bg-stone-50 transition">Back to Home</button>
+            <button onclick="go_home()" class="flex-1 bg-white border border-stone-200 text-stone-600 py-4 rounded-2xl font-bold hover:bg-stone-50 transition">Back to Home</button>
         </div>
 
         <p class="mt-12 text-stone-400 text-xs flex items-center gap-2">
@@ -119,6 +119,10 @@
 
             createConfetti();
         });
+
+        function go_home(){
+            window.location.href = "{% url 'home' %}"
+        }
 
         function createConfetti() {
             for(let i = 0; i < 40; i++) {

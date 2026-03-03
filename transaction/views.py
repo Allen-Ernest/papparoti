@@ -1,25 +1,14 @@
 from django.shortcuts import redirect, render
 from django.contrib import messages
+from django.utils import timezone
+from datetime import timedelta
+from orders.models import Order
+    
+def get_success_page(request, order_id):
+    order = Order.objects.get(pk=order_id)
+    delivery_time = timezone.now() + timedelta(hours=1)
+    estimated_time = delivery_time.strftime("%H:%M")
+    return render(request, "order_success.html", {"order": order, "delivery_time": estimated_time})
 
-def get_checkout_page(request):
-    if request.user.is_authenticated and request.user.role == 'client':
-        return render(request, "checkout.html")
-    else:
-        messages.error(request, 'Unauthorized access.')
-        return redirect("auth")
-    
-def process_checkout(request):
-    if request.method == 'POST':
-        # Process the checkout form data here
-        # For example, you can create an order, save it to the database, etc.
-        
-        messages.success(request, 'Checkout successful!')
-        return redirect('home')
-    else:
-        messages.error(request, 'Invalid request method.')
-        return redirect('checkout')
-    
-    #TODO: Let the server accept floating value prices
-    #TODO: Add to cut functionality via javascript http requests
-    #TODO: Modify order model
-    #TODO: use the created error templates for any system errors
+def get_error_page(request):
+    return render(request, "order_failed.html")
