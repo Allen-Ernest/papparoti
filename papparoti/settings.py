@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-k_3vns^(9c+w*s93agokdq=pkdsy4-zs1yg3isr6kxbsimpd)g
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '://onrender.com',
+    'papparoti.onrender.com',
     'localhost',
     '127.0.0.1',
 ]
