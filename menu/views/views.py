@@ -1,8 +1,15 @@
-from pyexpat.errors import messages
-from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts import get_object_or_404, render, redirect
+from django.views.decorators.http import require_POST
 from ..models import Menu, MenuCategory
 from shopping_cart.models import Cart, CartItem
-from django.utils import timezone
+
+
+admin_required = user_passes_test(
+    lambda user: user.is_authenticated and user.role == 'admin',
+    login_url='auth_admin',
+)
 
 def get_menus(request):
     categories = MenuCategory.objects.prefetch_related('menus')
@@ -35,75 +42,96 @@ def get_menus(request):
         })
         
 
+@admin_required
 def get_menu_manager(request):
-    menus = Menu.objects.all()
+    menus = Menu.objects.select_related('category').all()
     categories = MenuCategory.objects.all()
     return render(request, "menu_management.html", {"menus": menus, "categories": categories})
 
+
+@admin_required
+@require_POST
 def add_menu(request):
-    if request.method == "POST":
-        name = request.POST.get("name")
-        price = request.POST.get("price")
-        description = request.POST.get("description")
-        img = request.POST.get("image")
-        category_id = request.POST.get("category")
+    name = request.POST.get("name", "").strip()
+    price = request.POST.get("price", "").strip()
+    description = request.POST.get("description", "").strip()
+    image_url = request.POST.get("image", "").strip()
+    category_id = request.POST.get("category")
 
-        if name and price and description and img and category_id:
-            try:
-                category = MenuCategory.objects.get(id=category_id)
-                menu = Menu.objects.create(name=name, price=price, description=description, image_url=img, category=category)
-                menu.save()
-                return redirect("menu_manager")
-            except MenuCategory.DoesNotExist:
-                messages.error(request, 'Invalid Request')
-                return redirect("menu_manager")
-        else:
-            messages.error(request, 'Invalid Request')
-            return redirect("menu_manager")
-    else:
-        messages.error(request, 'Invalid Request')
-        return redirect("admin_dashboard")
+    if not all((name, price, description, image_url, category_id)):
+        messages.error(request, "Please complete all menu item fields.")
+        return redirect("menu_manager")
 
+    try:
+        price = int(price)
+    except ValueError:
+        messages.error(request, "Price must be a whole number of Tanzanian shillings.")
+        return redirect("menu_manager")
+
+    if price <= 0:
+        messages.error(request, "Price must be greater than zero.")
+        return redirect("menu_manager")
+
+    category = get_object_or_404(MenuCategory, id=category_id)
+    Menu.objects.create(
+        name=name,
+        price=price,
+        description=description,
+        image_url=image_url,
+        category=category,
+    )
+    messages.success(request, "Menu item created successfully.")
+    return redirect("menu_manager")
+
+
+@admin_required
+@require_POST
 def delete_menu(request):
-    if request.method == "POST":
-        menu_id = request.POST.get("menu_id")
-        if menu_id:
-            menu = Menu.objects.get(id=menu_id)
-            menu.delete()
-            return render(request, "menu.html", {"menus": [menu]})
-        else:
-            return render(request, "menu.html", {"menus": []})
+    menu_id = request.POST.get("menu_id")
+    if not menu_id:
+        messages.error(request, "Choose a menu item to delete.")
+        return redirect("menu_manager")
 
-    else:
-        context = {"Error": "Bad Request"}
-        return render(request, "menu.html")
-    
-def update_menu(request):
-    if request.method == "POST":
-        menu_id = request.POST.get("menu_id")
-        name = request.POST.get("name")
-        price = request.POST.get("price")
-        description = request.POST.get("description")
-        img = request.POST.get("image")
+    menu = get_object_or_404(Menu, id=menu_id)
+    menu.delete()
+    messages.success(request, "Menu item deleted successfully.")
+    return redirect("menu_manager")
 
-        if menu_id and name and price and description and img:
-            try:
-                menu = Menu.objects.get(id=menu_id)
-                menu.name = name
-                menu.price = price
-                menu.description = description
-                menu.image_url = img
-                menu.save()
-                return redirect("admin_dashboard")
-            except Menu.DoesNotExist:
-                context = {"Error": "Menu not found"}
-                return redirect("admin_dashboard")
-        else:
-            context = {"Error": "Invalid Request"}
-            return redirect("admin_dashboard")
-    else:
-        context = {"Error": "Bad Request"}
-        return redirect("admin_dashboard")
-    
+
+@admin_required
+@require_POST
+def update_menu(request, menu_id):
+    menu = get_object_or_404(Menu, id=menu_id)
+    name = request.POST.get("name", "").strip()
+    price = request.POST.get("price", "").strip()
+    description = request.POST.get("description", "").strip()
+    image_url = request.POST.get("image", "").strip()
+    category_id = request.POST.get("category")
+
+    if not all((name, price, description, image_url, category_id)):
+        messages.error(request, "Please complete all menu item fields.")
+        return redirect("menu_manager")
+
+    try:
+        price = int(price)
+    except ValueError:
+        messages.error(request, "Price must be a whole number of Tanzanian shillings.")
+        return redirect("menu_manager")
+
+    if price <= 0:
+        messages.error(request, "Price must be greater than zero.")
+        return redirect("menu_manager")
+
+    category = get_object_or_404(MenuCategory, id=category_id)
+    menu.name = name
+    menu.price = price
+    menu.description = description
+    menu.image_url = image_url
+    menu.category = category
+    menu.save()
+    messages.success(request, "Menu item updated successfully.")
+    return redirect("menu_manager")
+
+
 def get_500_error(request):
     return render(request, "500.html")

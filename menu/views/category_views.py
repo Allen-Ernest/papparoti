@@ -1,16 +1,21 @@
-from ..models import Menu, MenuCategory
+from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import redirect
+from django.views.decorators.http import require_POST
+from ..models import MenuCategory
 
+
+@user_passes_test(
+    lambda user: user.is_authenticated and user.role == 'admin',
+    login_url='auth_admin',
+)
+@require_POST
 def add_menu_cartegory(request):
-    if request.method == "POST":
-        name = request.POST.get("name")
-        if name:
-            menu_category = MenuCategory.objects.create(name=name)
-            menu_category.save()
-            return redirect("menu_manager")
-        else:
-            context = {"Error": "Invalid Request"}
-            return redirect("menu_manager")
-    else:
-        context = {"Error": "Bad Request"}
+    name = request.POST.get("name", "").strip()
+    if not name:
+        messages.error(request, "Enter a category name.")
         return redirect("menu_manager")
+
+    MenuCategory.objects.create(name=name)
+    messages.success(request, "Category created successfully.")
+    return redirect("menu_manager")

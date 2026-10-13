@@ -11,8 +11,6 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
-import os
-import dj_database_url
 
 from django.conf.global_settings import AUTH_USER_MODEL
 
@@ -30,11 +28,10 @@ SECRET_KEY = 'django-insecure-k_3vns^(9c+w*s93agokdq=pkdsy4-zs1yg3isr6kxbsimpd)g
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '://onrender.com',
+    'papparoti.onrender.com',
     'localhost',
     '127.0.0.1',
 ]
-
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -93,8 +90,6 @@ DATABASES = {
     }
 }
 
-if os.environ.get('DATABASE_URL'):
-    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
