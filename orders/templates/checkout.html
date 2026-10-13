@@ -134,7 +134,7 @@
                                 <p class="text-sm font-bold">{{ item.menu.name }}</p>
                                 <p class="text-[10px] text-stone-400">{{ item.menu.description }}</p>
                             </div>
-                            <p class="text-sm font-bold text-stone-900">${{ item.menu.price }}</p>
+                            <p class="text-sm font-bold text-stone-900">TSh {{ item.menu.price }}</p>
                         </div>
                         {% endfor %}
                     </div>
@@ -142,15 +142,15 @@
                     <div class="space-y-3 pt-6 border-t border-stone-50">
                         <div class="flex justify-between text-sm">
                             <span class="text-stone-400">Subtotal</span>
-                            <span class="font-bold">${{ price }}</span>
+                            <span class="font-bold">TSh {{ price }}</span>
                         </div>
                         <div class="flex justify-between text-sm">
                             <span class="text-stone-400">VAT (7%)</span>
-                            <span class="font-bold">${{ vat }}</span>
+                            <span class="font-bold">TSh {{ vat }}</span>
                         </div>
                         <div class="flex justify-between text-lg font-bold text-stone-900 pt-2">
                             <span>Total</span>
-                            <span class="text-amber-700">${{ total_price }}</span>
+                            <span class="text-amber-700">TSh {{ total_price }}</span>
                         </div>
                     </div>
 

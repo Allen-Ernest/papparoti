@@ -3,6 +3,7 @@ from decimal import Decimal, ROUND_HALF_UP
 from datetime import timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.utils import timezone
 from django.contrib import messages
@@ -115,6 +116,7 @@ def process_order(request):
         "order": order.id,
     }, status=200)
 
+@login_required(login_url='auth')
 def get_checkout_page(request):
     if request.user.is_authenticated and request.user.role == 'client':
         if not Cart.objects.filter(user=request.user.client_profile, status='active').exists():
@@ -133,14 +135,23 @@ def get_checkout_page(request):
         messages.error(request, 'Unauthorized access.')
         return redirect("auth")
     
+@login_required(login_url='auth')
 def get_orders_page(request):
+    if request.user.role != 'client':
+        messages.error(request, 'Unauthorized access.')
+        return redirect('home')
+
     orders = Order.objects.filter(
         client=request.user.client_profile
-    ).order_by('-created_at')
+    ).prefetch_related('items__menu').order_by('-created_at')
 
     now = timezone.now()
 
     for order in orders:
+        order.subtotal_price = sum(
+            item.get_total_price() for item in order.items.all()
+        )
+
         if order.status == 'pending':
             expiry_time = order.created_at + timedelta(hours=1)
 
